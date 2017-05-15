@@ -14,4 +14,8 @@ public class Square {
         this.y = y;
     }
     
+    public Piece getPiece(){
+        return piece;
+    }
+    
 }

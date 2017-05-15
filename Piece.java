@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author heiseed
@@ -21,5 +23,7 @@ public abstract class Piece {
     public Color getColor(){
         return color;
     }
+    
+    public abstract ArrayList<Square> getPossibleMoves(Square start);
     
 }
