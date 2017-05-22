@@ -18,4 +18,20 @@ public class Square {
         return piece;
     }
     
+    public void setPiece(Piece p){
+        piece = p;
+    }
+    
+    public boolean isEmpty(){
+        return piece==null;
+    }
+    
+    public int getX(){
+        return x;
+    }
+    
+    public int getY(){
+        return y;
+    }
+    
 }
