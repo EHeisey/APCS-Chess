@@ -16,6 +16,7 @@ public class Board {
             }
         }
     }
+    
     public void printBoard() {
         for (int i = 0; i<8; i++) {
             System.out.println();
@@ -29,6 +30,10 @@ public class Board {
             }     
         }
         System.out.println("\n  a b c d e f g h");
+    }
+    
+    public Square getSquare(int x, int y){
+        return board[x][y];
     }
     
 }
