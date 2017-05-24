@@ -13,7 +13,7 @@ public abstract class Piece {
     
     public Piece(Color c, String i){
         color = c;
-        identifier = i;
+        identifier = (color==Color.WHITE) ? i.toUpperCase() : i.toLowerCase();
     }
     
     public Color getColor(){

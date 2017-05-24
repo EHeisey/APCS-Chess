@@ -22,16 +22,16 @@ public class Square {
         piece = p;
     }
     
-    public boolean isEmpty(){
-        return piece==null;
-    }
-    
     public int getX(){
         return x;
     }
     
     public int getY(){
         return y;
+    }
+    
+    public boolean isEmpty(){
+        return piece==null;
     }
     
 }
