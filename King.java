@@ -1,8 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chess;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -10,7 +8,12 @@ package chess;
  */
 public class King extends Piece {
 
-    public King(Board b, Color c) {
-        super(b, c);
+    public King(Color c) {
+        super(c, "K");
+    }
+
+    @Override
+    public ArrayList<Square> getPossibleMoves(Square start) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

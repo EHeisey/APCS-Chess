@@ -8,6 +8,7 @@ public class Board {
 
     private Square[][] board;
 
+    // needs to 
     public Board() {
         board = new Square[8][8];
         for (int x = 0; x < 8; x++) {
@@ -15,25 +16,30 @@ public class Board {
                 board[x][y] = new Square(x, y);
             }
         }
+
     }
-    
-    public void printBoard() {
-        for (int i = 0; i<8; i++) {
-            System.out.println();
-            System.out.print(i+1);
-            for (int j = 0; j<8; j++) {
-                 if (board[i][j].getPiece() == null) {
-                  System.out.print(" _");
-                 } else {
-                     System.out.print(" " + board[i][j].getPiece().getSymbol());                          
-                 } 
-            }     
-        }
+
+    // needs to be modified to take a Color as a parameter and print the board from either perspective
+    public void print() {
         System.out.println("\n  a b c d e f g h");
+        for (int i = 0; i < 8; i++) {
+            System.out.print(i + 1);
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j].isEmpty()) {
+                    System.out.print(" _");
+                } else {
+                    System.out.print(" " + board[i][j].getPiece().getID());
+                }
+            }
+            System.out.println();
+        }
     }
-    
-    public Square getSquare(int x, int y){
+
+    public boolean isValidSquare(Square s) {
+        return s.getX() > -1 && s.getX() < 8 && s.getY() > -1 && s.getY() < 8;
+    }
+
+    public Square getSquare(int x, int y) {
         return board[x][y];
     }
-    
 }
