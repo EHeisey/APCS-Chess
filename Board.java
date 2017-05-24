@@ -8,7 +8,7 @@ public class Board {
 
     private Square[][] board;
 
-    // needs to 
+    // needs to set up all pieces
     public Board() {
         board = new Square[8][8];
         for (int x = 0; x < 8; x++) {
@@ -41,5 +41,16 @@ public class Board {
 
     public Square getSquare(int x, int y) {
         return board[x][y];
+    }
+    
+    // needs serious work
+    public boolean inCheck(Color c){
+        King k;
+        for(Square[] row : board){
+            for(Square s : row){
+                if(s.getPiece() instanceof King && s.getPiece().getColor()==c) k = (King)s.getPiece();
+            }
+        }
+        return false;
     }
 }
