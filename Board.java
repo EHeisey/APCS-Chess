@@ -42,6 +42,21 @@ public class Board {
     public Square getSquare(int x, int y) {
         return board[x][y];
     }
+    public void printBoard() {
+        System.out.println();
+        for (int i = 0; i<8; i++) {
+            System.out.print(i+1);
+            for (int j = 0; j<8; j++) {
+                 if (board[i][j].getPiece() == null) {
+                  System.out.print(" _");
+                 } else {
+                     System.out.print(" " + board[i][j].getPiece().getSymbol());                          
+                 } 
+            }    
+            System.out.println();
+        }
+        System.out.println("\n a b c d e f g h");
+    }
     
     // needs serious work
     public boolean inCheck(Color c){
