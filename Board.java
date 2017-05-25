@@ -16,22 +16,35 @@ public class Board {
                 board[x][y] = new Square(x, y);
             }
         }
-
     }
 
-    // needs to be modified to take a Color as a parameter and print the board from either perspective
-    public void print() {
-        System.out.println("\n  a b c d e f g h");
-        for (int i = 0; i < 8; i++) {
-            System.out.print(i + 1);
-            for (int j = 0; j < 8; j++) {
-                if (board[i][j].isEmpty()) {
-                    System.out.print(" _");
-                } else {
-                    System.out.print(" " + board[i][j].getPiece().getID());
+    public void print(Color c){
+        if (c==Color.BLACK) {
+            System.out.println("\n  a b c d e f g h");
+            for (int i = 0; i < 8; i++) {
+                System.out.print(i + 1);
+                for (int j = 0; j < 8; j++) {
+                    if (board[i][j].isEmpty()) {
+                        System.out.print(" _");
+                    } else {
+                        System.out.print(" " + board[i][j].getPiece().getID());
+                    }
                 }
+                System.out.println();
             }
-            System.out.println();
+        } else {
+            System.out.println("\n  h g f e d c b a");
+            for (int i = 7; i > -1; i--) {
+                System.out.print(i + 1);
+                for (int j = 7; j > -1; j--) {
+                    if (board[i][j].isEmpty()) {
+                        System.out.print(" _");
+                    } else {
+                        System.out.print(" " + board[i][j].getPiece().getID());
+                    }
+                }
+                System.out.println();
+            }
         }
     }
 
