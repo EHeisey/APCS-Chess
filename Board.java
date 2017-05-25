@@ -53,17 +53,35 @@ public class Board {
     }
 
     public Square getSquare(int x, int y) {
+        if (x < 0 || x>7 || y<0|| y>7){
+            return null;
+        }
         return board[x][y];
     }
-    
-    // needs serious work
-    public boolean inCheck(Color c){
+    public boolean inCheck(Color current) {
+        //must get square of king
         King k;
-        for(Square[] row : board){
-            for(Square s : row){
-                if(s.getPiece() instanceof King && s.getPiece().getColor()==c) k = (King)s.getPiece();
+        for (Square[] r : board) {
+            for (Square s : r) {
+                if (!s.isEmpty()) {
+                    if (s.getPiece().getID().toLowerCase().equals("K") && s.getPiece().getColor().equals(current)){
+                        k = (King)s.getPiece();
+                        return k.inCheck(s);
+                    } 
+                }    
             }
         }
         return false;
     }
+    public ArrayList<Square> enemies(Color c) {
+        ArrayList<Square> enemies = new ArrayList<>();
+        for (Square[] r: board) {
+            for (Square s: r) {
+                if(!s.isEmpty() && !s.getPiece().getColor().equals(c)) {
+                    enemies.add(s);
+                }    
+            }
+        }    
+        return enemies;
+    }    
 }
