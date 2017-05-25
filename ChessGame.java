@@ -48,6 +48,7 @@ public class ChessGame {
     
     private Square askLocation(){
         String loc = console.nextLine();
+        //seems to have a problem on line 52...
         int x = Integer.parseInt(loc.substring(0, 1))-1;
         int y;
         switch(loc.charAt(1)){
