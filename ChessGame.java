@@ -30,7 +30,7 @@ public class ChessGame {
     public void start(){
         do{
             turn();
-        } while(true);  // change to check for a checkmate
+        } while(!board.inCheck((turn%2==0) ? Color.WHITE : Color.BLACK));  // change to check for a checkmate
     }
     
     private void turn(){
