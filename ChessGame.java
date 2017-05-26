@@ -37,15 +37,46 @@ public class ChessGame {
         Player current = (turn%2==0) ? white : black;
         System.out.println("\n"+current.getName()+"'s Turn");
         board.print(current.getColor());
-        System.out.print("Enter starting position:");
+        
+        System.out.println("Enter starting position in this format: 1a");
         Square start = askLocation();
-        System.out.print("\nEnter move position:");
+        Piece p = null;
+        while (p == null) {
+            if (start.isEmpty()) {
+                System.out.println("No piece here. Please enter a location in this format: 1a ");
+                start = askLocation();
+            } else if (!start.getPiece().getColor().equals(current.getColor())){
+                System.out.println("You cannot move this piece. Pick a " + current.getName() + " piece.");
+                start = askLocation();
+            } else {
+                p = start.getPiece();
+            }
+        }
+        System.out.println("Enter move position in this format: 1a");
         Square end = askLocation();
-        
-        
+        if (!canMove(p, start, end)) {
+            System.out.println("You cannot move that piece here. Choose another location.");
+            end = askLocation();
+        }
+
         turn++;
     }
-    
+    private boolean canMove(Piece p, Square start, Square end) {
+        for (Square choices: p.getPossibleMoves()) {
+            if (choices.equals(end)) {
+                start.removePiece();
+                end.setPiece(p);
+                if (board.inCheck(p.getColor())) {
+                    end.removePiece();
+                    start.setPiece(p);
+                    System.out.println("You are in check.");
+                    return false;
+                }
+                return true;
+            }
+        }    
+        return false;
+    }
     private Square askLocation(){
         String loc = console.nextLine();
         int x = Integer.parseInt(loc.substring(0, 1))-1;
