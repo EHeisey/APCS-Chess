@@ -70,6 +70,28 @@ public class Board {
         }
         return false;
     }
+    public boolean inCheckMate(Color c) {
+        if (inCheck(c)) {
+            King k = findKing(c);
+            return k.getPossibleMoves().size() <= 0;
+        }
+        return false;
+    }
+    
+    private King findKing(Color c) {
+        King k = null;
+        for (Square[] r : board) {
+            for (Square s : r) {
+                if (!s.isEmpty() && s.getPiece().getID().toLowerCase().equals("k")) {
+                    if (s.getPiece().getColor().equals(c)) {
+                        k = (King) s.getPiece();
+                    }
+                }
+            }
+        }
+        return k;
+    }
+    
     public ArrayList<Square> enemies(Color c) {
         ArrayList<Square> enemies = new ArrayList<>();
         for (Square[] r: board) {
@@ -80,25 +102,5 @@ public class Board {
             }
         }    
         return enemies;
-    }    
-    /*public Square findPiece(Piece p, Color c) {
-        for (Square[] r : board) {
-            for (Square s : r) {
-               if (!s.isEmpty())  {
-                 if (s.getPiece().getID().equals(p.getID()) && s.getPiece().getColor().equals(c)) {
-                     return s;
-                 }
-               }
-            }
-        }
-        return null;
-    }*/ //not working sadly   
-    /*
-    * method getSquare(int x, int y) - find square at x and y coordinates
-     int x - row
-     int y- column
-     return Square at coordinates or null if Square does not exist
-    */
-    
-   
+    }       
 }
