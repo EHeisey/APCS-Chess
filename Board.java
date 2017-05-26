@@ -61,16 +61,11 @@ public class Board {
         return board[x][y];
     }
     public boolean inCheck(Color current) {
-        //must get square of king
-        King k;
-        for (Square[] r : board) {
-            for (Square s : r) {
-                if (!s.isEmpty()) {
-                    if (s.getPiece().getID().toLowerCase().equals("K") && s.getPiece().getColor().equals(current)){
-                        k = (King)s.getPiece();
-                        return k.inCheck(s);
-                    } 
-                }    
+        for (Square enemy : enemies(current)) {
+            for (Square newEnemySpot : enemy.getPiece().getPossibleMoves()) {
+                if (newEnemySpot.getPiece().getID().toLowerCase().equals("k")) {
+                    return true;
+                }
             }
         }
         return false;
