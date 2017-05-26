@@ -3,7 +3,7 @@ package chess;
 import java.util.ArrayList;
 /**
  *
- * @author heiseed
+ * @author heiseed, wyliebl
  */
 public class Board {
 
@@ -18,9 +18,64 @@ public class Board {
         }
     }
     
-        public void print(Color c){
+    public void initialize() {
+        Piece[][] white = {
+            {
+                new Rook(Color.WHITE),
+                new Knight(Color.WHITE),
+                new Bishop(Color.WHITE),
+                new Queen(Color.WHITE),
+                new King(Color.WHITE),  
+                new Bishop(Color.WHITE),
+                new Knight(Color.WHITE),
+                new Rook(Color.WHITE)},
+            {
+                new Pawn(Color.WHITE),
+                new Pawn(Color.WHITE),
+                new Pawn(Color.WHITE),
+                new Pawn(Color.WHITE),
+                new Pawn(Color.WHITE),
+                new Pawn(Color.WHITE),
+                new Pawn(Color.WHITE),
+                new Pawn(Color.WHITE),
+            }};
+                
+        for (int i = 0; i<2; i++) {
+            for (int j = 0; j<8; j++) {
+                board[i][j].setPiece(white[i][j]);
+            }
+        } 
+        //place black pieces
+        Piece[][] black = {
+            {
+                new Rook(Color.BLACK),
+                new Knight(Color.BLACK),
+                new Bishop(Color.BLACK),
+                new Queen(Color.BLACK),
+                new King(Color.BLACK),  
+                new Bishop(Color.BLACK),
+                new Knight(Color.BLACK),
+                new Rook(Color.BLACK)},
+            {
+                new Pawn(Color.BLACK),
+                new Pawn(Color.BLACK),
+                new Pawn(Color.BLACK),
+                new Pawn(Color.BLACK),
+                new Pawn(Color.BLACK),
+                new Pawn(Color.BLACK),
+                new Pawn(Color.BLACK),
+                new Pawn(Color.BLACK),
+            }};
+                
+        for (int i = 0; i<2; i++) {
+            for (int j = 0; j<8; j++) {
+                board[7-i][j].setPiece(black[i][j]);
+            }
+        }
+    }
+    public void print(Color c){
         if (c==Color.BLACK) {
-            System.out.println("\n  a b c d e f g h");
+            
             for (int i = 0; i < 8; i++) {
                 System.out.print(i + 1);
                 for (int j = 0; j < 8; j++) {
@@ -30,10 +85,13 @@ public class Board {
                         System.out.print(" " + board[i][j].getPiece().getID());
                     }
                 }
+                if(i<7){
                 System.out.println();
+                }
             }
+            System.out.println("\n  a b c d e f g h");
         } else {
-            System.out.println("\n  h g f e d c b a");
+            
             for (int i = 7; i > -1; i--) {
                 System.out.print(i + 1);
                 for (int j = 7; j > -1; j--) {
@@ -43,8 +101,11 @@ public class Board {
                         System.out.print(" " + board[i][j].getPiece().getID());
                     }
                 }
+                if(i>0){
                 System.out.println();
+                }
             }
+            System.out.println("\n  h g f e d c b a");
         }
     } 
     
@@ -52,8 +113,9 @@ public class Board {
         return s.getX() > -1 && s.getX() < 8 && s.getY() > -1 && s.getY() < 8;
     }
     public boolean isValidSquare(int x, int y) {
-    return x > -1 && x < 8 && y > -1 && y < 8;
+        return x > -1 && x < 8 && y > -1 && y < 8;
     }
+    
     public Square getSquare(int x, int y) {
         if (x < 0 || x>7 || y<0|| y>7){
             return null;
@@ -62,14 +124,17 @@ public class Board {
     }
     public boolean inCheck(Color current) {
         for (Square enemy : enemies(current)) {
-            for (Square newEnemySpot : enemy.getPiece().getPossibleMoves()) {
-                if (!newEnemySpot.isEmpty() && newEnemySpot.getPiece().getID().toLowerCase().equals("k")) {
-                    return true;
+            if (!enemy.isEmpty()) {
+                for (Square newEnemySpot : enemy.getPiece().getPossibleMoves()) {                
+                    if (!newEnemySpot.isEmpty() && newEnemySpot.getPiece().getID().toLowerCase().equals("k")) {
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
+    
     public boolean inCheckMate(Color c) {
         if (inCheck(c)) {
             King k = findKing(c);
@@ -91,7 +156,6 @@ public class Board {
         }
         return k;
     }
-    
     public ArrayList<Square> enemies(Color c) {
         ArrayList<Square> enemies = new ArrayList<>();
         for (Square[] r: board) {
@@ -102,5 +166,25 @@ public class Board {
             }
         }    
         return enemies;
-    }       
+    }    
+    /*public Square findPiece(Piece p, Color c) {
+        for (Square[] r : board) {
+            for (Square s : r) {
+               if (!s.isEmpty())  {
+                 if (s.getPiece().getID().equals(p.getID()) && s.getPiece().getColor().equals(c)) {
+                     return s;
+                 }
+               }
+            }
+        }
+        return null;
+    }*/ //not working sadly   
+    /*
+    * method getSquare(int x, int y) - find square at x and y coordinates
+     int x - row
+     int y- column
+     return Square at coordinates or null if Square does not exist
+    */
+    
+   
 }

@@ -1,6 +1,6 @@
 package chess;
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * A command-line version of the classic game of chess.
@@ -9,8 +9,8 @@ import java.util.Scanner;
  */
 public class ChessGame {
     
-    private Board board;
-    private Player white, black;
+    private final Board board;
+    private final Player white, black;
     private int turn;
     private Scanner console;
     
@@ -18,6 +18,7 @@ public class ChessGame {
         console = new Scanner(System.in);
         board = new Board();
         Piece.setBoard(board);
+        board.initialize();
         System.out.print("Player 1 (white):");
         String w = console.nextLine();
         white = new Player(Color.WHITE, w);
@@ -46,9 +47,12 @@ public class ChessGame {
                 System.out.println("No piece here. Please enter a location in this format: 1a ");
                 start = askLocation();
             } else if (!start.getPiece().getColor().equals(current.getColor())){
-                System.out.println("You cannot move this piece. Pick a " + current.getName() + " piece.");
+                System.out.println("You cannot move this piece. Pick a " + current.getColor() + " piece.");
                 start = askLocation();
-            } else {
+            } else if (start.getPiece().getPossibleMoves().size() == 0) {
+                System.out.println("You cannot move this piece. Pick another " + current.getColor() + " piece.");
+                start = askLocation();
+            }else {
                 p = start.getPiece();
             }
         }
@@ -76,9 +80,11 @@ public class ChessGame {
             }
         }    
         return false;
-    }
+    }    
     private Square askLocation(){
+        console = new Scanner(System.in);
         String loc = console.nextLine();
+        //problem here... cannot catch strings and will esc??
         int x = Integer.parseInt(loc.substring(0, 1))-1;
         int y;
         switch(loc.charAt(1)){

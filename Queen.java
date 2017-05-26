@@ -19,12 +19,10 @@ public class Queen extends Piece {
         int i = 1;
         while(unblocked && i<8) {
            if (!(getBoard().isValidSquare(x, y+i))){
-               System.out.println("Not valid square");
                unblocked = false;
            } else {
                
                Square s = getBoard().getSquare(x, y+i);
-               System.out.print("Ok Square" + s.getX() + s.getY());
                if (s.isEmpty()) {
                    squares.add(s);
                    i++;
@@ -43,12 +41,10 @@ public class Queen extends Piece {
         i = 1;
         while(unblocked && i<8) {
            if (!(getBoard().isValidSquare(x, y-i))){
-               System.out.println("Not valid square");
                unblocked = false;
            } else {
                
                Square s = getBoard().getSquare(x, y-i);
-               System.out.print("Ok Square" + s.getX() + s.getY());
                if (s.isEmpty()) {
                    squares.add(s);
                    i++;
@@ -66,12 +62,10 @@ public class Queen extends Piece {
         i = 1;
         while(unblocked && i<8) {
            if (!(getBoard().isValidSquare(x-i, y))){
-               System.out.println("Not valid square");
                unblocked = false;
            } else {
                
                Square s = getBoard().getSquare(x-i, y);
-               System.out.print("Ok Square" + s.getX() + s.getY());
                if (s.isEmpty()) {
                    squares.add(s);
                    i++;
@@ -86,7 +80,7 @@ public class Queen extends Piece {
         } 
         //right
         unblocked = true;   
-        i = 0;
+        i = 1;
         while(unblocked && i<8) {
            if (!(getBoard().isValidSquare(x+i, y))){
                unblocked = false;

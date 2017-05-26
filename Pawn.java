@@ -21,9 +21,10 @@ public class Pawn extends Piece {
         Square start = this.currentSquare();
         int x = start.getX();
         int y = start.getY();
+        
         if (getColor().equals(Color.WHITE)) {
-            squares.add(getBoard().getSquare(x,y+1));
-            Square[] spot = {getBoard().getSquare(x+1, y+1), getBoard().getSquare(x-1, y+1)};
+            squares.add(getBoard().getSquare(x+1,y));
+            Square[] spot = {getBoard().getSquare(x+1, y+1), getBoard().getSquare(x+1, y-1)};
             ArrayList<Square> enemies = getBoard().enemies(Color.WHITE);  
             for (Square s: enemies) {
                 if (s.equals(spot[0]) || s.equals(spot[1])) {
@@ -31,8 +32,8 @@ public class Pawn extends Piece {
                 }
             }    
         }else{    
-            squares.add(getBoard().getSquare(x,y-1));
-            Square[] spot = {getBoard().getSquare(x+1, y-1), getBoard().getSquare(x-1, y-1)};
+            squares.add(getBoard().getSquare(x-1,y));
+            Square[] spot = {getBoard().getSquare(x-1, y+1), getBoard().getSquare(x-1, y-1)};
             ArrayList<Square> enemies = getBoard().enemies(Color.BLACK);
             for (Square s: enemies) {
                 if (s.equals(spot[0]) || s.equals(spot[1])) {
@@ -40,7 +41,6 @@ public class Pawn extends Piece {
                 }
             } 
         }
-        
         squares = okaySpots(squares);
         return squares;
     }

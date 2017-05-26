@@ -1,8 +1,12 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package chess;
 import java.util.ArrayList;
 /**
  *
- * @author heiseed, wyliebl
+ * @author wyliebl
  */
 public class King extends Piece {
     
@@ -31,13 +35,14 @@ public class King extends Piece {
     }
     private ArrayList<Square> okaySpots(ArrayList<Square> yo) {
         for (int i = yo.size()-1; i>=0; i--) {
+            
             if (yo.get(i) == null) {
                 yo.remove(i);
             } else{
+                
                 Square s = yo.get(i);
 
                 if((!s.isEmpty() && s.getPiece().getColor().equals(this.getColor())) || !King.getBoard().isValidSquare(s)) {
-                    System.out.print("get outta here");
                     yo.remove(s);
                 }
                 if (inCheck(s)){
@@ -47,16 +52,22 @@ public class King extends Piece {
         }        
         return yo;
     }   
-    public boolean inCheck(Square king) {
+    public boolean inCheck(Square newKing) {
         Board b = getBoard();
+        Square current = currentSquare();
+        King k = (King)current.getPiece();
+        current.removePiece();
         for (int i = 0; i<8; i++) {
             for (int j = 0; j<8; j++) {  
                 if (!b.getSquare(i,j).isEmpty()) {
                     Piece p = b.getSquare(i,j).getPiece();
-                    if (!p.getColor().equals(this.getColor())) {
-                        if (p.getPossibleMoves().size() >0) {
+                    
+                    if (!(p.getColor().equals(k.getColor())) && !p.getID().toLowerCase().equals("k")) {
+                        if (p.getPossibleMoves().size() > 0) {
                             for (Square s : p.getPossibleMoves()) {
-                                if (s == king) { 
+                                if (s == newKing) { 
+                               
+                                    current.setPiece(k);
                                     return true;
                                     
                                 }    
@@ -66,6 +77,7 @@ public class King extends Piece {
                 }
             }
         }    
+        current.setPiece(k);
         return false;
     }
 }

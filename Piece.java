@@ -28,10 +28,9 @@ public abstract class Piece {
         Square current = null;
         for (int i=0;i<8; i++) {
             for (int j= 0; j<8; j++) {
-                
-                    if (!getBoard().getSquare(i, j).isEmpty()&& getBoard().getSquare(i, j).getPiece().equals(this)) {
-                        current = getBoard().getSquare(i,j);
-                    }   
+                if (!board.getSquare(i, j).isEmpty()&& board.getSquare(i,j).getPiece().equals(this)) {
+                    current = getBoard().getSquare(i,j);
+                }   
                 
             }
         }
