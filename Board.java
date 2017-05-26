@@ -63,7 +63,7 @@ public class Board {
     public boolean inCheck(Color current) {
         for (Square enemy : enemies(current)) {
             for (Square newEnemySpot : enemy.getPiece().getPossibleMoves()) {
-                if (newEnemySpot.getPiece().getID().toLowerCase().equals("k")) {
+                if (!newEnemySpot.isEmpty() && newEnemySpot.getPiece().getID().toLowerCase().equals("k")) {
                     return true;
                 }
             }
