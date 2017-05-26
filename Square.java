@@ -14,24 +14,26 @@ public class Square {
         this.y = y;
     }
     
-    public Piece getPiece(){
+    public Piece getPiece() {
         return piece;
     }
     
-    public void setPiece(Piece p){
-        piece = p;
-    }
-    
-    public int getX(){
-        return x;
-    }
-    
-    public int getY(){
-        return y;
-    }
-    
-    public boolean isEmpty(){
+     public int getX() {
+         return x;
+     }
+     
+     public int getY() {
+         return y;
+     }
+     
+    public void setPiece(Piece p) {
+        piece = p;                
+    }    
+    public void removePiece() {
+        piece = null;
+    }    
+    public boolean isEmpty() {        
         return piece==null;
-    }
+    }    
     
 }
