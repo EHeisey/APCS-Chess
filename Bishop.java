@@ -2,7 +2,7 @@ package chess;
 import java.util.ArrayList;
 /**
  *
- * @author wyliebl
+ * @author heiseed, wyliebl
  */
 public class Bishop extends Piece {
     public Bishop(Color c) {
@@ -92,7 +92,6 @@ public class Bishop extends Piece {
                } 
            }   
         }
-
         return squares;
     }
 }

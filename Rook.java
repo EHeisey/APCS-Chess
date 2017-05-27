@@ -3,7 +3,7 @@ package chess;
 import java.util.ArrayList;
 /**
  *
- * @author wyliebl
+ * @author heiseed, wyliebl
  */
 public class Rook extends Piece {
 

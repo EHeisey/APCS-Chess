@@ -6,7 +6,7 @@ package chess;
 
 /**
  *
- * @author wyliebl
+ * @author heiseed, wyliebl
  */
 import java.util.ArrayList;
 public class Pawn extends Piece {
@@ -23,41 +23,48 @@ public class Pawn extends Piece {
         int y = start.getY();
         
         if (getColor().equals(Color.WHITE)) {
-            squares.add(getBoard().getSquare(x+1,y));
-            Square[] spot = {getBoard().getSquare(x+1, y+1), getBoard().getSquare(x+1, y-1)};
+            if(getBoard().isValidSquare(x+1,y)) {
+                Square forward = getBoard().getSquare(x+1,y);
+                if (forward.isEmpty()) {
+                    squares.add(forward);
+                }    
+            };    
+            
             ArrayList<Square> enemies = getBoard().enemies(Color.WHITE);  
             for (Square s: enemies) {
-                if (s.equals(spot[0]) || s.equals(spot[1])) {
-                    squares.add(s);
+                if(getBoard().isValidSquare(x+1,y+1)) {
+                    if(s == getBoard().getSquare(x+1, y+1)) {
+                        squares.add(s);
+                    }
+                }
+                if(getBoard().isValidSquare(x+1,y-1)) {
+                    if(s == getBoard().getSquare(x+1, y-1)) {
+                        squares.add(s);
+                    }
                 }
             }    
         }else{    
-            squares.add(getBoard().getSquare(x-1,y));
-            Square[] spot = {getBoard().getSquare(x-1, y+1), getBoard().getSquare(x-1, y-1)};
-            ArrayList<Square> enemies = getBoard().enemies(Color.BLACK);
+            if(getBoard().isValidSquare(x-1,y)) {
+                Square forward = getBoard().getSquare(x-1,y);
+                if (forward.isEmpty()) {
+                    squares.add(forward);
+                }    
+            };   
+            ArrayList<Square> enemies = getBoard().enemies(Color.BLACK);  
             for (Square s: enemies) {
-                if (s.equals(spot[0]) || s.equals(spot[1])) {
-                    squares.add(s);
+                if(getBoard().isValidSquare(x-1,y+1)) {
+                    if(s == getBoard().getSquare(x-1, y+1)) {
+                        squares.add(s);
+                    }
+                }
+                if(getBoard().isValidSquare(x-1,y-1)) {
+                    if(s == getBoard().getSquare(x-1, y-1)) {
+                        squares.add(s);
+                    }
                 }
             } 
         }
-        squares = okaySpots(squares);
         return squares;
     }
-    private ArrayList<Square> okaySpots(ArrayList<Square> yo) {
-        for (int i = yo.size()-1; i>=0; i--) {
-            if (yo.get(i) == null) {
-                yo.remove(i);
-            } else{
-                Square s = yo.get(i);
-                
-                if((!s.isEmpty() && getColor().equals(this.getColor())) || !Pawn.getBoard().isValidSquare(s)) {
-                    yo.remove(s);
-                }
-            }
-        }        
-        return yo;
-    } 
-    
     
 }

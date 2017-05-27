@@ -138,9 +138,38 @@ public class Board {
     public boolean inCheckMate(Color c) {
         if (inCheck(c)) {
             King k = findKing(c);
-            return k.getPossibleMoves().size() <= 0;
+            if (k.getPossibleMoves().isEmpty()) {
+                
+                if (enemies(enemies(c).get(0).getPiece().getColor()).isEmpty()) {
+                    return true;
+                } else {
+                    for (Square friend : enemies(enemies(c).get(0).getPiece().getColor())) {
+                        Piece p = friend.getPiece();
+                        if (!p.getID().toLowerCase().equals("k")) {
+                            for (Square helpful : p.getPossibleMoves()) {
+                                Piece temp = helpful.getPiece();
+                                Piece f = p;
+                                friend.removePiece();
+                                helpful.setPiece(f);
+                                if (!inCheck(c)) {
+                                    friend.setPiece(f);
+                                    helpful.setPiece(temp);
+                                    return false;
+                                } else{
+                                    friend.setPiece(f);
+                                    helpful.setPiece(temp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } else {
+            return false;
         }
-        return false;
+        return true;
+
     }
     
     private King findKing(Color c) {

@@ -2,7 +2,7 @@ package chess;
 
 /**
  *
- * @author heiseed
+ * @author heiseed, wyliebl
  */
 public class Square {
     

@@ -2,10 +2,12 @@ package chess;
 import java.util.ArrayList;
 /**
  *
- * @author wyliebl
+ * @author heiseed, wyliebl
  */
 public class Queen extends Piece {
-    
+    /*
+    * constructor Queen
+    */
     public Queen(Color c) {
         super(c, "Q");
     }

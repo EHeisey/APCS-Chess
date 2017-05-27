@@ -6,7 +6,7 @@ package chess;
 
 /**
  *
- * @author wyliebl
+ * @author heiseed, wyliebl
  */
 public enum Color {
     

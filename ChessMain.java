@@ -2,14 +2,18 @@ package chess;
 
 
 
+
+
+
+
 /**
  *
- * @author heiseed
+ * @author heiseed, wyliebl
  */
 public class ChessMain {
 
     public static void main(String[] args) {
-        ChessGame g = new ChessGame();
-        g.start();
+        ChessGame.printInstructions();		 
+        new ChessGame().start();
     }
 }

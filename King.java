@@ -6,7 +6,7 @@ package chess;
 import java.util.ArrayList;
 /**
  *
- * @author wyliebl
+ * @author heiseed, wyliebl
  */
 public class King extends Piece {
     
