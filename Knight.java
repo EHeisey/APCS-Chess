@@ -5,11 +5,18 @@ import java.util.ArrayList;
  * @author heiseed, wyliebl
  */
 public class Knight extends Piece {
-    
+    /**
+    * constructor Knight(Color c) - creates a Knight of that color and gives it an identifying string
+    *@param c - color of piece
+    */
     public Knight(Color c) {
         super(c, "N");
     }
-
+   /**
+    method getPossibleMoves() - get possible moves according to Knight rules
+    @param none
+    @return ArrayList<Square> squares - all possible moves for Knight
+    */
     @Override
     public ArrayList<Square> getPossibleMoves(){
         ArrayList<Square> squares = new ArrayList<>();
@@ -29,6 +36,11 @@ public class Knight extends Piece {
         squares = okaySpots(squares);
         return squares;
     }
+    /**
+    method okaySpots(ArrayList<Square> yo) - check to see if all squares are alright for the knight to move to (exist and are not empty)
+    @param yo  - the ArrayList to check
+    @return ArrayList<Square>  - revised array list
+    */
     private ArrayList<Square> okaySpots(ArrayList<Square> yo) {
         for (int i = yo.size()-1; i>=0; i--) {
             if (yo.get(i) == null) {

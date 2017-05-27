@@ -5,12 +5,19 @@ import java.util.ArrayList;
  * @author heiseed, wyliebl
  */
 public class Queen extends Piece {
-    /*
-    * constructor Queen
+   /**
+    * constructor Queen(Color c) - creates a Queen of that color and gives it an identifying string
+    *@param c - color of piece
     */
     public Queen(Color c) {
         super(c, "Q");
     }
+    /**
+    method getPossibleMoves() - get possible moves according to Queen rules
+    @param none
+    @return ArrayList<Square> squares - all possible moves for Queen
+    */
+    @Override
     public ArrayList<Square> getPossibleMoves(){
         ArrayList<Square> squares = new ArrayList<Square>();
         Square start = this.currentSquare();

@@ -9,11 +9,18 @@ import java.util.ArrayList;
  * @author heiseed, wyliebl
  */
 public class King extends Piece {
-    
+    /*
+    * constructor King(Color c) - creates a piece of that color and gives it an identifying string
+    *@param c - color of piece
+    */
     public King(Color c) {
         super(c, "K");        
     }
-    
+    /*
+    method getPossibleMoves() - get possible moves according to King rules
+    @return ArrayList<Square> squares - all possible moves for King
+    */
+    @Override
     public ArrayList<Square> getPossibleMoves(){
         ArrayList<Square> squares = new ArrayList<Square>();
         Square start = this.currentSquare();
@@ -33,6 +40,11 @@ public class King extends Piece {
         
         return squares;
     }
+    /**
+    method okaySpots(ArrayList<Square> yo) - check to see if all squares are alright for the king to move to (exist and are not empty)
+    @param yo  - the ArrayList to check
+    @return ArrayList<Square>  - revised array list
+    */
     private ArrayList<Square> okaySpots(ArrayList<Square> yo) {
         for (int i = yo.size()-1; i>=0; i--) {
             
@@ -52,6 +64,11 @@ public class King extends Piece {
         }        
         return yo;
     }   
+    /**
+    method inCheck(Square newKing) - see if the king will be in check at the specified square
+    @param newKing - the square the king will move to
+    @return true if the king will be in check in that spot(i.e. an enemy piece could take the king at that spot), false if he will not
+    */
     public boolean inCheck(Square newKing) {
         Board b = getBoard();
         Square current = currentSquare();

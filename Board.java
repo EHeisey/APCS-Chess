@@ -8,7 +8,10 @@ import java.util.ArrayList;
 public class Board {
 
     private Square[][] board;
-
+   /**
+    constructor Board() - create a new 8x8 board for the game to take place
+    @param none
+    */
     public Board() {
         board = new Square[8][8];
         for (int x = 0; x < 8; x++) {
@@ -17,7 +20,11 @@ public class Board {
             }
         }
     }
-    
+   /**
+    method intialize() - place pieces on board to start the game
+    @param none
+    @return null
+    */
     public void initialize() {
         Piece[][] white = {
             {
@@ -73,6 +80,11 @@ public class Board {
             }
         }
     }
+    /**
+    method print(Color c) - print the board from the perspective of a color
+    @param c - color of player
+    @return null
+    */
     public void print(Color c){
         if (c==Color.BLACK) {
             
@@ -108,20 +120,41 @@ public class Board {
             System.out.println("\n  h g f e d c b a");
         }
     } 
-    
+    /**
+    method isValidSquare(Square s) - determine whether a square is on the board
+    @param Square s - the square to test
+    @return true if square exists on board, false otherwise
+    */
     public boolean isValidSquare(Square s) {
         return s.getX() > -1 && s.getX() < 8 && s.getY() > -1 && s.getY() < 8;
     }
+    /**
+    method isValidSquare(int x, int y) - determine whether the coordinates given will show  a square on the board
+    @param x - the x coordinate (from user input 1-8)
+    @param y - the y coordinate (from user input a-h)
+    @return true if square exists on board, false otherwise
+    */
     public boolean isValidSquare(int x, int y) {
         return x > -1 && x < 8 && y > -1 && y < 8;
     }
-    
+   /**
+    method getSquare(int x, int y) - get the Square at those x and y coordinates
+    @param x - the x coordinate (from user input 1-8)
+    @param y - the y coordinate (from user input a-h)
+    @return board[x][y] - the Square at those coordinates
+    */
     public Square getSquare(int x, int y) {
         if (x < 0 || x>7 || y<0|| y>7){
             return null;
         }
         return board[x][y];
     }
+    /**
+    method inCheck(Color current) - see if the current color is in check
+    @param current - the color to check
+    @return true - if any piece of the opposite color can move to current color's king, false otherwise
+    
+    */
     public boolean inCheck(Color current) {
         for (Square enemy : enemies(current)) {
             if (!enemy.isEmpty()) {
@@ -134,12 +167,18 @@ public class Board {
         }
         return false;
     }
-    
+    /**
+    method inCheckMate(Color c) - determine if the color c is in checkmate
+    @param c - the color to test
+    @return true - if an enemy can take the king, the king cannot move out, 
+                   and another piece cannot take that enemy
+                   or move in between the king and the enemy
+    @return false otherwise
+    */
     public boolean inCheckMate(Color c) {
         if (inCheck(c)) {
             King k = findKing(c);
             if (k.getPossibleMoves().isEmpty()) {
-                
                 if (enemies(enemies(c).get(0).getPiece().getColor()).isEmpty()) {
                     return true;
                 } else {
@@ -159,19 +198,24 @@ public class Board {
                                     friend.setPiece(f);
                                     helpful.setPiece(temp);
                                 }
-                            }
+                            } 
+                            return true;
                         }
                     }
                 }
+            } else {
+                return false;
             }
 
-        } else {
-            return false;
-        }
-        return true;
+        } 
+        return false;
 
     }
-    
+    /**
+    method findKing(Color c) - find the king of the color c (and thus its location)
+    @param c - the color of the king to find
+    @return King k - the king of color c
+    */
     private King findKing(Color c) {
         King k = null;
         for (Square[] r : board) {
@@ -185,6 +229,11 @@ public class Board {
         }
         return k;
     }
+    /**
+    method enemies(Color c) - find all the Squares of the enemies of a color c
+    @param c - the color to find enemies for
+    @return ArrayList<Square> enemies - all Squares of enemies of color c
+    */
     public ArrayList<Square> enemies(Color c) {
         ArrayList<Square> enemies = new ArrayList<>();
         for (Square[] r: board) {
@@ -195,25 +244,5 @@ public class Board {
             }
         }    
         return enemies;
-    }    
-    /*public Square findPiece(Piece p, Color c) {
-        for (Square[] r : board) {
-            for (Square s : r) {
-               if (!s.isEmpty())  {
-                 if (s.getPiece().getID().equals(p.getID()) && s.getPiece().getColor().equals(c)) {
-                     return s;
-                 }
-               }
-            }
-        }
-        return null;
-    }*/ //not working sadly   
-    /*
-    * method getSquare(int x, int y) - find square at x and y coordinates
-     int x - row
-     int y- column
-     return Square at coordinates or null if Square does not exist
-    */
-    
-   
+    }       
 }

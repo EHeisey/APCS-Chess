@@ -10,11 +10,18 @@ package chess;
  */
 import java.util.ArrayList;
 public class Pawn extends Piece {
-
+    /**
+    * constructor Pawn(Color c) - creates a Pawn of that color and gives it an identifying string
+    *@param c - color of piece
+    */
     public Pawn(Color c) {
         super(c, "P");
     }
-
+    /**
+    method getPossibleMoves() - get possible moves according to Pawn rules
+    @param none
+    @return ArrayList<Square> squares - all possible moves for Pawn
+    */
     @Override
     public ArrayList<Square> getPossibleMoves(){
         ArrayList<Square> squares = new ArrayList<>();

@@ -6,10 +6,18 @@ import java.util.ArrayList;
  * @author heiseed, wyliebl
  */
 public class Rook extends Piece {
-
+    /**
+    * constructor Rook(Color c) - creates a Rook of that color and gives it an identifying string
+    *@param c - color of piece
+    */
     public Rook(Color c) {
         super(c, "R");
     }
+    /**
+    method getPossibleMoves() - get possible moves according to Rook rules
+    @param none
+    @return ArrayList<Square> squares - all possible moves for Rook
+    */
     public ArrayList<Square> getPossibleMoves(){
         ArrayList<Square> squares = new ArrayList<Square>();
         Square start = this.currentSquare();
