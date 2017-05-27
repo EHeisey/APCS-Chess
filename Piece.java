@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.ArrayList;
+import java.awt.Point;
 
 /**
  *
@@ -8,22 +9,12 @@ import java.util.ArrayList;
  */
 public abstract class Piece {
     
-    private static Board board;
-    
     private Color color;
     private String identifier;
     
     public Piece(Color c, String i){
         color = c;
         identifier = (color==Color.WHITE) ? i.toUpperCase() : i.toLowerCase();
-    }
-    
-    public static void setBoard(Board b){
-        board = b;
-    }
-    
-    public static Board getBoard(){
-        return board;
     }
     
     public Color getColor(){
@@ -34,6 +25,6 @@ public abstract class Piece {
         return identifier;
     }
     
-    public abstract ArrayList<Square> getPossibleMoves(Square start);
+    public abstract ArrayList<Point> getMoves(Piece[][] board, Point start);
     
 }
