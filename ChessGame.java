@@ -13,6 +13,7 @@ public class ChessGame {
     private final Player white, black;
     private int turn;
     private Scanner console;
+    private Player current;
     /**
     constructor ChessGame() - set up a chess game with two players and find out the names of those players
     @param none
@@ -28,6 +29,7 @@ public class ChessGame {
         System.out.print("Player 2 (black):");
         String b = console.nextLine();
         black = new Player(Color.BLACK, b);
+        current = white;
     }
     
     /**
@@ -42,7 +44,8 @@ public class ChessGame {
         Color winner = (turn%2==0) ? Color.WHITE : Color.BLACK;
         board.print(winner);
         boolean answered = false;
-        System.out.println("Congratulations! Color " + winner + " has won the game. ");   
+        
+        System.out.println("Congratulations! Player " + current.getName() + " has won the game. ");   
     }
     /**
     method turn() - take a player's turn, ask for the movements to be completed, move pieces as necessary
@@ -50,7 +53,7 @@ public class ChessGame {
     @return null
     */
     private void turn(){
-        Player current = (turn%2==0) ? white : black;
+        current = (turn%2==0) ? white : black;
         System.out.println("\n"+current.getName()+"'s Turn");
         board.print(current.getColor());
         if(board.inCheck(current.getColor())) {
@@ -105,7 +108,10 @@ public class ChessGame {
         }
         end.setPiece(p);
         start.removePiece();
-        
+        if (p.getID().toLowerCase().equals("p")) {
+            Pawn pawn = (Pawn)p;
+            pawn.pawnHasMoved();
+        }
         turn++;
     }
     /**
@@ -137,7 +143,7 @@ public class ChessGame {
 
     /**
      *method printInstructions() - print instructions for the game 
-     * @param none
+     *@param none
      *@return null
      **/
 
@@ -151,6 +157,7 @@ public class ChessGame {
          System.out.println("This game displays standard chess coordinates above and beside");
          System.out.println("the game board each time it is displayed. Players must enter their");
          System.out.println("move selections in the form of row and column (ex. 1a, 5d, 3F, 8H).");
+         
          System.out.println();
     }
     /**
@@ -161,8 +168,8 @@ public class ChessGame {
     private Square askLocation() {
         console = new Scanner(System.in);
         String loc = console.nextLine();
+        
         if (loc.length() == 2) {
-            //problem here... cannot catch strings and will esc??
             int x = -1;
             try {
                 x = Integer.parseInt(loc.substring(0, 1)) - 1;
@@ -181,35 +188,35 @@ public class ChessGame {
             switch (loc.charAt(1)) {
                 case 'a':
                 case 'A':
-                    y = 0;
+                    y = 7;
                     break;
                 case 'b':
                 case 'B':
-                    y = 1;
+                    y = 6;
                     break;
                 case 'c':
                 case 'C':
-                    y = 2;
+                    y = 5;
                     break;
                 case 'd':
                 case 'D':
-                    y = 3;
+                    y = 4;
                     break;
                 case 'e':
                 case 'E':
-                    y = 4;
+                    y = 3;
                     break;
                 case 'f':
                 case 'F':
-                    y = 5;
+                    y = 2;
                     break;
                 case 'g':
                 case 'G':
-                    y = 6;
+                    y = 1;
                     break;
                 case 'h':
                 case 'H':
-                    y = 7;
+                    y = 0;
                     break;
                 default:
                     y = -1;
@@ -226,6 +233,7 @@ public class ChessGame {
         } else {
             System.out.println("Position input wrong length. Try in format: 1a");
             return askLocation();
+
         }
         
     } 

@@ -67,4 +67,5 @@ public class Square {
         return piece==null;
     }    
     
+    
 }

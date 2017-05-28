@@ -82,4 +82,5 @@ public abstract class Piece {
     */
     public abstract ArrayList<Square> getPossibleMoves();
     
+    
 }
