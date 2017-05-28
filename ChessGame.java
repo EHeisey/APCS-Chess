@@ -22,7 +22,6 @@ public class ChessGame {
      */
     public ChessGame(){
         board = new Board();
-        board.initialize();
         Piece.setBoard(board);
         System.out.print("Player 1 (white):");
         String w = console.nextLine();
@@ -41,11 +40,9 @@ public class ChessGame {
         do{
             turn();
         } while(!board.inCheckMate((turn % 2 == 0) ? Color.WHITE : Color.BLACK));
-        Color winner = (turn % 2 == 0) ? Color.WHITE : Color.BLACK;
-        board.print(winner);
-        boolean answered = false;
-
-        System.out.println("Congratulations! Player " + current.getName() + " has won the game. ");
+        Player winner = (turn % 2 == 1) ? white : black;
+        board.print(winner.getColor());
+        System.out.println("Congratulations! Player " + winner.getName() + " has won the game. ");
     }
 
     /**
@@ -160,7 +157,12 @@ public class ChessGame {
         System.out.println("This game displays standard chess coordinates above and beside");
         System.out.println("the game board each time it is displayed. Players must enter their");
         System.out.println("move selections in the form of row and column (ex. 1a, 5d, 3F, 8H).");
-
+        System.out.println();
+        System.out.println("The white pieces are displayed as uppercase letters:");
+        System.out.println("King: K, Queen: Q, Bishop: B, Knight: N, Rook: R, Pawn: P");
+        System.out.println();
+        System.out.println("The black pieces are displayed as lowercase letters:");
+        System.out.println("King: k, Queen: q, Bishop: b, Knight: n, Rook: r, Pawn: p");
         System.out.println();
     }
 
@@ -179,11 +181,11 @@ public class ChessGame {
             try{
                 x = Integer.parseInt(loc.substring(0, 1)) - 1;
             } catch(NumberFormatException e){
-                System.out.println("Bad format. Try in format: 1a");
+                System.out.println("Incorrect format. Try in format: 1a");
                 return askLocation();
             }
             if(!Character.isLetter(loc.charAt(1))){
-                System.out.println("Bad format. Try in format: 1a");
+                System.out.println("Incorrect format. Try in format: 1a");
                 return askLocation();
             }
 
@@ -233,7 +235,7 @@ public class ChessGame {
             }
             return s;
         } else{
-            System.out.println("Position input wrong length. Try in format: 1a");
+            System.out.println("Incorrect format. Try in format: 1a");
             return askLocation();
 
         }

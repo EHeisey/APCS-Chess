@@ -1,6 +1,5 @@
 package chess;
 
-import static chess.ChessGame.printInstructions;
 import java.util.Scanner;
 
 /**
@@ -10,23 +9,21 @@ import java.util.Scanner;
 public class ChessMain {
 
     public static void main(String[] args){
-        printInstructions();
+        Scanner console = new Scanner(System.in);
+        ChessGame.printInstructions();
         
-        boolean playing = true;
-        while(playing){
+        playing:
+        while(true){
             new ChessGame().start();
             System.out.println("Play again? (yes/no)");
-            boolean answered = false;
-            while(!answered){
-                Scanner console = new Scanner(System.in);
-                String loc = console.nextLine();
-                if(loc.contains("yes")){
-                    answered = true;
-                }else if(loc.contains("no")){
-                    answered = true;
-                    playing = false;
+            while(true){
+                String ans = console.nextLine();
+                if(ans.contains("yes")){
+                    break;
+                }else if(ans.contains("no")){
+                    break playing;
                 } else{
-                    System.out.println("Please answer the question with a yes or a no.");
+                    System.out.println("Please answer the question with a \"yes\" or a \"no\".");
                 }
             }
         }

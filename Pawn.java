@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Pawn extends Piece {
 
-    public boolean hasMoved;
+    private boolean hasMoved;
 
     /**
      * constructor Pawn(Color c) - creates a Pawn of that color and gives it an
@@ -24,7 +24,7 @@ public class Pawn extends Piece {
     /**
      * method getPossibleMoves() - get possible moves according to Pawn rules
      *
-     * @return ArrayList<Square> squares - all possible moves for Pawn
+     * @return a list of all possible moves for Pawn
      */
     @Override
     public ArrayList<Square> getPossibleMoves(){
@@ -38,13 +38,14 @@ public class Pawn extends Piece {
                 Square forward = getBoard().getSquare(x + 1, y);
                 if(forward.isEmpty()){
                     squares.add(forward);
-                }
-                if(!hasMoved){
-                    Square upTwo = getBoard().getSquare(x + 2, y);
-                    if(upTwo.isEmpty()){
-                        squares.add(upTwo);
+                    if(!hasMoved){
+                        Square upTwo = getBoard().getSquare(x + 2, y);
+                        if(upTwo.isEmpty()){
+                            squares.add(upTwo);
+                        }
                     }
                 }
+
             }
 
             ArrayList<Square> enemies = getBoard().enemies(Color.WHITE);
@@ -65,13 +66,14 @@ public class Pawn extends Piece {
                 Square forward = getBoard().getSquare(x - 1, y);
                 if(forward.isEmpty()){
                     squares.add(forward);
-                }
-                if(!hasMoved){
-                    Square upTwo = getBoard().getSquare(x - 2, y);
-                    if(upTwo.isEmpty()){
-                        squares.add(upTwo);
+                    if(!hasMoved){
+                        Square upTwo = getBoard().getSquare(x - 2, y);
+                        if(upTwo.isEmpty()){
+                            squares.add(upTwo);
+                        }
                     }
                 }
+
             }
             ArrayList<Square> enemies = getBoard().enemies(Color.BLACK);
             for(Square s : enemies){
@@ -90,10 +92,8 @@ public class Pawn extends Piece {
         return squares;
     }
 
-    /*
-    method pawnHasMoved() - call when the pawn has moved on the board
-    @param none
-    @return null
+    /**
+     * method pawnHasMoved() - call when the pawn has moved on the board
      */
     public void pawnHasMoved(){
         hasMoved = true;
