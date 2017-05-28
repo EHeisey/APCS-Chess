@@ -4,19 +4,25 @@ import java.util.Scanner;
 
 /**
  * A command-line version of the classic game of chess.
- * 
+ *
  * @author heiseed, wyliebl
  */
 public class ChessGame {
+
+    private static Scanner console = new Scanner(System.in);
     
-    private Board board;
-    private Player white, black;
+    private final Board board;
+    private final Player white, black;
     private int turn;
-    private Scanner console;
-    
+    private Player current;
+
+    /**
+     * constructor ChessGame() - set up a chess game with two players and find
+     * out the names of those players
+     */
     public ChessGame(){
-        console = new Scanner(System.in);
         board = new Board();
+        board.initialize();
         Piece.setBoard(board);
         System.out.print("Player 1 (white):");
         String w = console.nextLine();
@@ -24,69 +30,214 @@ public class ChessGame {
         System.out.print("Player 2 (black):");
         String b = console.nextLine();
         black = new Player(Color.BLACK, b);
+        current = white;
     }
-    
-    //call the turn method until there's a winner
+
+    /**
+     * method start() - start the chess game and call the turn method until
+     * there is a winner, where it will prompt to play again
+     */
     public void start(){
         do{
             turn();
-        } while(true);  // change to check for a checkmate
+        } while(!board.inCheckMate((turn % 2 == 0) ? Color.WHITE : Color.BLACK));
+        Color winner = (turn % 2 == 0) ? Color.WHITE : Color.BLACK;
+        board.print(winner);
+        boolean answered = false;
+
+        System.out.println("Congratulations! Player " + current.getName() + " has won the game. ");
     }
-    
+
+    /**
+     * method turn() - take a player's turn, ask for the movements to be
+     * completed, move pieces as necessary
+     */
     private void turn(){
-        Player current = (turn%2==0) ? white : black;
-        System.out.println("\n"+current.getName()+"'s Turn");
+        current = (turn%2 == 0) ? white : black;
+        System.out.println("\n" + current.getName() + "'s Turn");
         board.print(current.getColor());
-        System.out.print("Enter starting position:");
-        Square start = askLocation();
-        System.out.print("\nEnter move position:");
+        if(board.inCheck(current.getColor())) System.out.println("You are in check. Please move out of check.");
+
+        System.out.println("Enter start position:");
+
+        Square start = null;
+        Piece p = null;
+        while(start==null||p == null){
+            start = askLocation();
+            // cannot select an empty square
+            if(start.isEmpty()){
+                System.out.println("No piece here. Please enter a location containing a piece:");
+                continue;
+            }
+            // cannot select a piece of the opposite color
+            if(!start.getPiece().getColor().equals(current.getColor())){
+                System.out.println("You cannot move this piece. Pick a " + current.getColor() + " piece:");
+                continue;
+            }
+            // cannot select a piece with no poosible moves
+            if(start.getPiece().getPossibleMoves().isEmpty()){
+                System.out.println("This piece is trapped. Pick another piece:");
+                continue;
+            }
+            
+            // now p is a valid piece on the board, of the right color, with possible moves
+            p = start.getPiece();
+            
+            // deselects this piece if the player is in check and this piece cannot change that
+            if(board.inCheck(current.getColor())){
+                boolean canhelp = false;
+                for(Square s : p.getPossibleMoves()){
+                    Piece temp = s.getPiece();
+
+                    start.removePiece();
+                    s.setPiece(p);
+                    if(!board.inCheck(current.getColor())){
+                        canhelp = true;
+                    }
+                    start.setPiece(p);
+                    s.setPiece(temp);
+                    if(canhelp) break;
+                }
+                if(!canhelp){
+                    System.out.println("You cannot move this piece to get out of check. Choose another.");
+                    p = null;
+                }
+            }
+        }
+        
+        
+        System.out.println("Enter move position:");
         Square end = askLocation();
-        
-        
+        while(!canMove(p, start, end)){
+            System.out.println("You cannot move that piece here. Choose another location:");
+            end = askLocation();
+        }
+        end.setPiece(p);
+        start.removePiece();
+        if(p instanceof Pawn) ((Pawn)p).pawnHasMoved();
         turn++;
     }
-    
-    private Square askLocation(){
-        String loc = console.nextLine();
-        //seems to have a problem on line 52...
-        int x = Integer.parseInt(loc.substring(0, 1))-1;
-        int y;
-        switch(loc.charAt(1)){
-            case 'a':
-            case 'A': y = 0;
-                      break;
-            case 'b':
-            case 'B': y = 1;
-                      break;
-            case 'c':
-            case 'C': y = 2;
-                      break;
-            case 'd':
-            case 'D': y = 3;
-                      break;
-            case 'e':
-            case 'E': y = 4;
-                      break;
-            case 'f':
-            case 'F': y = 5;
-                      break;
-            case 'g':
-            case 'G': y = 6;
-                      break;
-            case 'h':
-            case 'H': y = 7;
-                      break;
-            default: y = -1;
+
+    /**
+     * method canMove(Piece p, Square start, Square end) - see if the Piece can
+     * move from start to end
+     *
+     * @param Piece  p - the piece to move
+     * @param Square start - the square the piece starts at
+     * @param Square end - the potential end point of the piece
+     * @return true - if the piece does not cause the king to be in check and
+     *         the rules of that piece allow the move; false otherwise
+     */
+    private boolean canMove(Piece p, Square start, Square end){
+        for(Square choices : p.getPossibleMoves()){
+            if(choices.equals(end)){
+                start.removePiece();
+                end.setPiece(p);
+                if(board.inCheck(p.getColor())){
+                    end.removePiece();
+                    start.setPiece(p);
+                    System.out.println("You are in check.");
+                    return false;
+                }
+                end.removePiece();
+                start.setPiece(p);
+                return true;
+            }
         }
-        Square s;
-        try{
-            s = board.getSquare(x, y);
-        }
-        catch(IndexOutOfBoundsException e){
-            System.out.print("Invalid Square. Try again:");
-            s = askLocation();
-        }
-        return s;
+        return false;
     }
-    
+
+    /**
+     * method printInstructions() - print instructions for the game
+     */
+    public static void printInstructions(){
+        System.out.println("            .......................................");
+        System.out.println("            .            Classic Chess            .");
+        System.out.println("            .                                     .");
+        System.out.println("            .     Eli Heisey & Brittany Wylie     .");
+        System.out.println("            .......................................");
+        System.out.println();
+        System.out.println("This game displays standard chess coordinates above and beside");
+        System.out.println("the game board each time it is displayed. Players must enter their");
+        System.out.println("move selections in the form of row and column (ex. 1a, 5d, 3F, 8H).");
+
+        System.out.println();
+    }
+
+    /**
+     * method askLocation() - parse the user's location input for the x and y of
+     * some square on the board
+     * 
+     * @return Square s - the square the user requests
+     */
+    private Square askLocation(){
+        console = new Scanner(System.in);
+        String loc = console.nextLine();
+
+        if(loc.length() == 2){
+            int x, y;
+            try{
+                x = Integer.parseInt(loc.substring(0, 1)) - 1;
+            } catch(NumberFormatException e){
+                System.out.println("Bad format. Try in format: 1a");
+                return askLocation();
+            }
+            if(!Character.isLetter(loc.charAt(1))){
+                System.out.println("Bad format. Try in format: 1a");
+                return askLocation();
+            }
+
+            switch(loc.charAt(1)){
+                case 'a':
+                case 'A':
+                    y = 7;
+                    break;
+                case 'b':
+                case 'B':
+                    y = 6;
+                    break;
+                case 'c':
+                case 'C':
+                    y = 5;
+                    break;
+                case 'd':
+                case 'D':
+                    y = 4;
+                    break;
+                case 'e':
+                case 'E':
+                    y = 3;
+                    break;
+                case 'f':
+                case 'F':
+                    y = 2;
+                    break;
+                case 'g':
+                case 'G':
+                    y = 1;
+                    break;
+                case 'h':
+                case 'H':
+                    y = 0;
+                    break;
+                default:
+                    y = -1;
+            }
+
+            Square s;
+            try{
+                s = board.getSquare(x, y);
+            } catch(IndexOutOfBoundsException e){
+                System.out.print("Invalid Square. Try again:");
+                return askLocation();
+            }
+            return s;
+        } else{
+            System.out.println("Position input wrong length. Try in format: 1a");
+            return askLocation();
+
+        }
+
+    }
+
 }
