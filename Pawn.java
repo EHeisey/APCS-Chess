@@ -45,20 +45,17 @@ public class Pawn extends Piece {
                         }
                     }
                 }
-
             }
-
-            ArrayList<Square> enemies = getBoard().enemies(Color.WHITE);
-            for(Square s : enemies){
-                if(getBoard().isValidSquare(x + 1, y + 1)){
-                    if(s == getBoard().getSquare(x + 1, y + 1)){
-                        squares.add(s);
-                    }
+            if(getBoard().isValidSquare(x+1, y+1)){
+                Square s = getBoard().getSquare(x+1, y+1);
+                if(!s.isEmpty() && isEnemy(s.getPiece())){
+                    squares.add(s);
                 }
-                if(getBoard().isValidSquare(x + 1, y - 1)){
-                    if(s == getBoard().getSquare(x + 1, y - 1)){
-                        squares.add(s);
-                    }
+            }
+            if(getBoard().isValidSquare(x+1, y-1)){
+                Square s = getBoard().getSquare(x+1, y-1);
+                if(!s.isEmpty() && isEnemy(s.getPiece())){
+                    squares.add(s);
                 }
             }
         } else{
@@ -75,17 +72,16 @@ public class Pawn extends Piece {
                 }
 
             }
-            ArrayList<Square> enemies = getBoard().enemies(Color.BLACK);
-            for(Square s : enemies){
-                if(getBoard().isValidSquare(x - 1, y + 1)){
-                    if(s == getBoard().getSquare(x - 1, y + 1)){
-                        squares.add(s);
-                    }
+            if(getBoard().isValidSquare(x-1, y+1)){
+                Square s = getBoard().getSquare(x-1, y+1);
+                if(!s.isEmpty() && isEnemy(s.getPiece())){
+                    squares.add(s);
                 }
-                if(getBoard().isValidSquare(x - 1, y - 1)){
-                    if(s == getBoard().getSquare(x - 1, y - 1)){
-                        squares.add(s);
-                    }
+            }
+            if(getBoard().isValidSquare(x-1, y-1)){
+                Square s = getBoard().getSquare(x-1, y-1);
+                if(!s.isEmpty() && isEnemy(s.getPiece())){
+                    squares.add(s);
                 }
             }
         }

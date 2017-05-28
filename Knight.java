@@ -21,7 +21,7 @@ public class Knight extends Piece {
     /**
      * method getPossibleMoves() - get possible moves according to Knight rules
      *
-     * @return ArrayList<Square> squares - all possible moves for Knight
+     * @return all possible moves for Knight
      */
     @Override
     public ArrayList<Square> getPossibleMoves(){
@@ -45,21 +45,20 @@ public class Knight extends Piece {
 
     /**
      * method okaySpots(ArrayList<Square> yo) - check to see if all squares are
-     * alright for the knight to move to (exist and are not empty)
+     * alright for the knight to move to (exist and are not occupied by same team)
      *
      * @param yo - the ArrayList to check
-     * @return ArrayList<Square> - revised array list
+     * @return revised array list
      */
     private ArrayList<Square> okaySpots(ArrayList<Square> yo){
         for(int i = yo.size() - 1; i >= 0; i--){
-            if(yo.get(i) == null){
-                yo.remove(i);
-            } else{
+            if(yo.get(i) != null){
                 Square s = yo.get(i);
-
-                if((!s.isEmpty() && s.getPiece().getColor().equals(this.getColor())) || !Knight.getBoard().isValidSquare(s)){
-                    yo.remove(s);
+                if(!s.isEmpty() && !isEnemy(s.getPiece())){
+                    yo.remove(i);
                 }
+            } else{
+                yo.remove(i);
             }
         }
         return yo;

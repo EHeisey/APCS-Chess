@@ -34,7 +34,7 @@ public class ChessGame {
 
     /**
      * method start() - start the chess game and call the turn method until
-     * there is a winner, where it will prompt to play again
+     * there is a winner
      */
     public void start(){
         do{
@@ -116,7 +116,7 @@ public class ChessGame {
     }
 
     /**
-     * method canMove(Piece p, Square start, Square end) - see if the Piece can
+     * method canMove(Piece p, Square start, Square end) - checks if the Piece can
      * move from start to end
      *
      * @param Piece  p - the piece to move
@@ -126,26 +126,20 @@ public class ChessGame {
      *         the rules of that piece allow the move; false otherwise
      */
     private boolean canMove(Piece p, Square start, Square end){
-        for(Square choices : p.getPossibleMoves()){
-            if(choices.equals(end)){
-                start.removePiece();
-                end.setPiece(p);
-                if(board.inCheck(p.getColor())){
-                    end.removePiece();
-                    start.setPiece(p);
-                    System.out.println("You are in check.");
-                    return false;
-                }
-                end.removePiece();
-                start.setPiece(p);
-                return true;
-            }
-        }
-        return false;
+        // checks if the selected end move is a possible move for the piece
+        if(!p.getPossibleMoves().contains(end)) return false;
+        // checks if this move will place the king in check
+        boolean canMove = true;
+        start.removePiece();
+        end.setPiece(p);
+        if(board.inCheck(p.getColor())) canMove = false;
+        end.removePiece();
+        start.setPiece(p);
+        return canMove;
     }
 
     /**
-     * method printInstructions() - print instructions for the game
+     * method printInstructions() - prints instructions for the game
      */
     public static void printInstructions(){
         System.out.println("            .......................................");
@@ -167,78 +161,75 @@ public class ChessGame {
     }
 
     /**
-     * method askLocation() - parse the user's location input for the x and y of
-     * some square on the board
+     * method askLocation() - parse the user's location input for the location of
+     * a desired square on the board
      * 
-     * @return Square s - the square the user requests
+     * @return the square the user requests
      */
     private Square askLocation(){
         console = new Scanner(System.in);
         String loc = console.nextLine();
 
-        if(loc.length() == 2){
-            int x, y;
-            try{
-                x = Integer.parseInt(loc.substring(0, 1)) - 1;
-            } catch(NumberFormatException e){
-                System.out.println("Incorrect format. Try in format: 1a");
-                return askLocation();
-            }
-            if(!Character.isLetter(loc.charAt(1))){
-                System.out.println("Incorrect format. Try in format: 1a");
-                return askLocation();
-            }
-
-            switch(loc.charAt(1)){
-                case 'a':
-                case 'A':
-                    y = 7;
-                    break;
-                case 'b':
-                case 'B':
-                    y = 6;
-                    break;
-                case 'c':
-                case 'C':
-                    y = 5;
-                    break;
-                case 'd':
-                case 'D':
-                    y = 4;
-                    break;
-                case 'e':
-                case 'E':
-                    y = 3;
-                    break;
-                case 'f':
-                case 'F':
-                    y = 2;
-                    break;
-                case 'g':
-                case 'G':
-                    y = 1;
-                    break;
-                case 'h':
-                case 'H':
-                    y = 0;
-                    break;
-                default:
-                    y = -1;
-            }
-
-            Square s;
-            try{
-                s = board.getSquare(x, y);
-            } catch(IndexOutOfBoundsException e){
-                System.out.print("Invalid Square. Try again:");
-                return askLocation();
-            }
-            return s;
-        } else{
+        if(loc.length() != 2){
             System.out.println("Incorrect format. Try in format: 1a");
             return askLocation();
-
         }
+        int x, y;
+        try{
+            x = Integer.parseInt(loc.substring(0, 1)) - 1;
+        } catch(NumberFormatException e){
+            System.out.println("Incorrect format. Try in format: 1a");
+            return askLocation();
+        }
+        if(!Character.isLetter(loc.charAt(1))){
+            System.out.println("Incorrect format. Try in format: 1a");
+            return askLocation();
+        }
+        switch(loc.charAt(1)){
+            case 'a':
+            case 'A':
+                y = 7;
+                break;
+            case 'b':
+            case 'B':
+                y = 6;
+                break;
+            case 'c':
+            case 'C':
+                y = 5;
+                break;
+            case 'd':
+            case 'D':
+                y = 4;
+                break;
+            case 'e':
+            case 'E':
+                y = 3;
+                break;
+            case 'f':
+            case 'F':
+                y = 2;
+                break;
+            case 'g':
+            case 'G':
+                y = 1;
+                break;
+            case 'h':
+            case 'H':
+                y = 0;
+                break;
+            default:
+                y = -1;
+        }
+
+        Square s;
+        try{
+            s = board.getSquare(x, y);
+        } catch(IndexOutOfBoundsException e){
+            System.out.print("Invalid Square. Try again:");
+            return askLocation();
+        }
+        return s;
 
     }
 

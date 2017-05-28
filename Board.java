@@ -3,7 +3,9 @@ package chess;
 import java.util.ArrayList;
 
 /**
- *
+ * Represents all the squares on a chess board. Also has methods for checking the
+ * status of the board as a whole (i.e. check, checkmate).
+ * 
  * @author heiseed, wyliebl
  */
 public class Board {
@@ -11,8 +13,8 @@ public class Board {
     private Square[][] board;
 
     /**
-     * constructor Board() - create a new 8x8 board for the game to take place
-     *
+     * constructor Board() - create a new 8x8 board for the game to take place.
+     * Places all the chess pieces in their starting positions
      */
     public Board(){
         board = new Square[8][8];
@@ -117,18 +119,7 @@ public class Board {
             System.out.println("\n  a b c d e f g h\n");
         }
     }
-
-    /**
-     * method isValidSquare(Square s) - determine whether a square is on the
-     * board
-     *
-     * @param s - the square to test
-     * @return true if square exists on board, false otherwise
-     */
-    public boolean isValidSquare(Square s){
-        return s.getX() > -1 && s.getX() < 8 && s.getY() > -1 && s.getY() < 8;
-    }
-
+    
     /**
      * method isValidSquare(int x, int y) - determine whether the coordinates
      * given will show a square on the board
@@ -145,9 +136,9 @@ public class Board {
      * method getSquare(int x, int y) - get the Square at those x and y
      * coordinates
      *
-     * @param x - the x coordinate (from user input 1-8)
-     * @param y - the y coordinate (from user input a-h)
-     * @return board[x][y] - the Square at those coordinates
+     * @param x - the x coordinate
+     * @param y - the y coordinate
+     * @return the Square at the give coordinates
      */
     public Square getSquare(int x, int y){
         if(x < 0 || x > 7 || y < 0 || y > 7){
@@ -160,7 +151,7 @@ public class Board {
      * method inCheck(Color current) - see if the current color is in check
      *
      * @param current - the color to check
-     * @return true - if any piece of the opposite color can move to current
+     * @return true if any piece of the opposite color can move to current
      *         color's king, false otherwise
      *
      */
@@ -181,7 +172,7 @@ public class Board {
      * method inCheckMate(Color c) - determine if the color c is in checkmate
      *
      * @param c - the color to test
-     * @return true - if an enemy can take the king, the king cannot move out,
+     * @return true if an enemy can take the king, the king cannot move out,
      *         and another piece cannot take that enemy or move in between the
      *         king and the enemy; false otherwise
      */
@@ -227,7 +218,7 @@ public class Board {
      * location)
      *
      * @param c - the color of the king to find
-     * @return King k - the king of color c
+     * @return the king of color c
      */
     private King findKing(Color c){
         King k = null;
@@ -248,7 +239,7 @@ public class Board {
      * c
      *
      * @param c - the color to find enemies for
-     * @return ArrayList<Square> enemies - all Squares of enemies of color c
+     * @return all Squares of enemies of color c
      */
     public ArrayList<Square> enemies(Color c){
         ArrayList<Square> enemies = new ArrayList<>();

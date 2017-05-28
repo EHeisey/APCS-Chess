@@ -3,7 +3,10 @@ package chess;
 import java.util.ArrayList;
 
 /**
- *
+ * The abstract superclass of all chess pieces. Holds references to information
+ * that all pieces need (color and identifier) and a global reference to the 
+ * board the pieces are on;
+ * 
  * @author heiseed, wyliebl
  */
 public abstract class Piece {
@@ -36,7 +39,6 @@ public abstract class Piece {
     /**
      * method getBoard() - returns the board the piece is on
      *
-     * @param none
      * @return Board
      */
     public static Board getBoard(){
@@ -47,26 +49,23 @@ public abstract class Piece {
      * method currentSquare() - returns the current square of the piece, or null
      * if it does not exist
      *
-     * @param none
      * @return square of piece
      */
     public Square currentSquare(){
-        Square current = null;
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 if(!board.getSquare(i, j).isEmpty() && board.getSquare(i, j).getPiece().equals(this)){
-                    current = getBoard().getSquare(i, j);
+                    return board.getSquare(i, j);
                 }
 
             }
         }
-        return current;
+        return null;
     }
 
     /**
      * method getColor()- returns the color of the piece
      *
-     * @param none
      * @return color of piece
      */
     public Color getColor(){
@@ -76,8 +75,7 @@ public abstract class Piece {
     /**
      * method getID()- returns a string containing the set ID of the piece
      *
-     * @param none
-     * @return identifier - id of piece
+     * @return id of piece
      */
     public String getID(){
         return identifier;
@@ -88,7 +86,7 @@ public abstract class Piece {
      *
      * @param p2 - the piece you would like to compare to the current piece
      * @return true if p2 is a different color, false if p2 is same color as
-     *         this piecee
+     *         this piece
      */
     public boolean isEnemy(Piece p2){
         return (!p2.getColor().equals(this.getColor()));
@@ -96,6 +94,8 @@ public abstract class Piece {
 
     /**
      * method getPossibleMoves() - get possible moves according to piece rules
+     * @return a list of possible moves according to the rules governing this
+     * type of piece
      */
     public abstract ArrayList<Square> getPossibleMoves();
 

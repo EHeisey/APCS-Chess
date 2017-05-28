@@ -21,7 +21,7 @@ public class Queen extends Piece {
     /**
      * method getPossibleMoves() - get possible moves according to Queen rules
      *
-     * @return ArrayList<Square> squares - all possible moves for Queen
+     * @return all possible moves for Queen
      */
     @Override
     public ArrayList<Square> getPossibleMoves(){
@@ -29,165 +29,110 @@ public class Queen extends Piece {
         Square start = this.currentSquare();
         int x = start.getX();
         int y = start.getY();
+        
         //moves up
-        boolean unblocked = true;
-        int i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x, y + i))){
-                unblocked = false;
+        int i;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x, y + i))) break;
+            Square s = getBoard().getSquare(x, y + i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-
-                Square s = getBoard().getSquare(x, y + i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
-
         }
-
         //down
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x, y - i))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x, y - i))) break;
+            Square s = getBoard().getSquare(x, y - i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-
-                Square s = getBoard().getSquare(x, y - i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
-
         }
         //left
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x - i, y))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x - i, y))) break;
+            Square s = getBoard().getSquare(x - i, y);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-
-                Square s = getBoard().getSquare(x - i, y);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
-
         }
         //right
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x + i, y))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x + i, y))) break;
+            Square s = getBoard().getSquare(x + i, y);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x + i, y);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
         }
         //up right
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x + i, y + i))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x + i, y + i))) break;
+            Square s = getBoard().getSquare(x + i, y + i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x + i, y + i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
-
         }
         //up left
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x - i, y + i))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x - i, y + i))) break;
+            Square s = getBoard().getSquare(x - i, y + i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x - i, y + i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
-
         }
         //down right
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x + i, y - i))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x + i, y - i))) break;
+            Square s = getBoard().getSquare(x + i, y - i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x + i, y - i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
         }
         //down left
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x - i, y - i))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x - i, y - i))) break;
+            Square s = getBoard().getSquare(x - i, y - i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x - i, y - i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
         }
         return squares;

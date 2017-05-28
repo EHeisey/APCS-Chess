@@ -18,7 +18,7 @@ public class King extends Piece {
 
     /**
      * method getPossibleMoves() - get possible moves according to King rules
-     * @return ArrayList<Square> squares - all possible moves for King
+     * @return all possible moves for King
      */
     @Override
     public ArrayList<Square> getPossibleMoves(){
@@ -46,23 +46,22 @@ public class King extends Piece {
      * alright for the king to move to (exist and are not empty)
      *
      * @param yo - the ArrayList to check
-     * @return ArrayList<Square> - revised array list
+     * @return revised array list
      */
     private ArrayList<Square> okaySpots(ArrayList<Square> yo){
         for(int i = yo.size() - 1; i >= 0; i--){
 
-            if(yo.get(i) == null){
-                yo.remove(i);
-            } else{
-
+            if(yo.get(i) != null){
                 Square s = yo.get(i);
 
-                if((!s.isEmpty() && s.getPiece().getColor().equals(this.getColor())) || !King.getBoard().isValidSquare(s)){
+                if(!s.isEmpty() && !isEnemy(s.getPiece())){
                     yo.remove(s);
                 }
                 if(inCheck(s)){
                     yo.remove(s);
                 }
+            } else{
+                yo.remove(i);
             }
         }
         return yo;
@@ -79,29 +78,23 @@ public class King extends Piece {
     public boolean inCheck(Square newKing){
         Board b = getBoard();
         Square current = currentSquare();
-        King k = (King)current.getPiece();
         current.removePiece();
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 if(!b.getSquare(i, j).isEmpty()){
                     Piece p = b.getSquare(i, j).getPiece();
-
-                    if(!(p.getColor().equals(k.getColor())) && !p.getID().toLowerCase().equals("k")){
-                        if(p.getPossibleMoves().size() > 0){
-                            for(Square s : p.getPossibleMoves()){
-                                if(s == newKing){
-
-                                    current.setPiece(k);
-                                    return true;
-
-                                }
+                    if(isEnemy(p) && !(p instanceof King) && p.getPossibleMoves().size() > 0){
+                        for(Square s : p.getPossibleMoves()){
+                            if(s == newKing){
+                                current.setPiece(this);
+                                return true;
                             }
                         }
                     }
                 }
             }
         }
-        current.setPiece(k);
+        current.setPiece(this);
         return false;
     }
 }

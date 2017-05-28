@@ -21,7 +21,7 @@ public class Rook extends Piece {
     /**
      * method getPossibleMoves() - get possible moves according to Rook rules
      *
-     * @return ArrayList<Square> squares - all possible moves for Rook
+     * @return all possible moves for Rook
      */
     @Override
     public ArrayList<Square> getPossibleMoves(){
@@ -29,86 +29,57 @@ public class Rook extends Piece {
         Square start = this.currentSquare();
         int x = start.getX();
         int y = start.getY();
-        //moves right
-        boolean unblocked = true;
-        int i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x, y + i))){
-                unblocked = false;
+        //moves up
+        int i;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x, y + i))) break;
+            Square s = getBoard().getSquare(x, y + i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-
-                Square s = getBoard().getSquare(x, y + i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
-
-        }
-        //left
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x, y - i))){
-                unblocked = false;
-            } else{
-
-                Square s = getBoard().getSquare(x, y - i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
-            }
-
-        }
-        //up
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x - i, y))){
-                unblocked = false;
-            } else{
-
-                Square s = getBoard().getSquare(x - i, y);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
-            }
-
         }
         //down
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x + i, y))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x, y - i))) break;
+            Square s = getBoard().getSquare(x, y - i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x + i, y);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
+            }
+        }
+        //left
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x - i, y))) break;
+            Square s = getBoard().getSquare(x - i, y);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
+            } else{
+                break;
+            }
+        }
+        //right
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x + i, y))) break;
+            Square s = getBoard().getSquare(x + i, y);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
+            } else{
+                break;
             }
         }
         return squares;

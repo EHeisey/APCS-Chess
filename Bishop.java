@@ -21,7 +21,7 @@ public class Bishop extends Piece {
     /**
      * method getPossibleMoves() - get possible moves according to Bishop rules
      *
-     * @return ArrayList<Square> squares - all possible moves for Bishop
+     * @return all possible moves for Bishop
      */
     @Override
     public ArrayList<Square> getPossibleMoves(){
@@ -30,81 +30,56 @@ public class Bishop extends Piece {
         int x = start.getX();
         int y = start.getY();
         //up right
-        boolean unblocked = true;
-        int i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x + i, y + i))){
-                unblocked = false;
+        int i;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x + i, y + i))) break;
+            Square s = getBoard().getSquare(x + i, y + i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x + i, y + i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
-
         }
         //up left
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x - i, y + i))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x - i, y + i))) break;
+            Square s = getBoard().getSquare(x - i, y + i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x - i, y + i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
-
         }
         //down right
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x + i, y - i))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x + i, y - i))) break;
+            Square s = getBoard().getSquare(x + i, y - i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x + i, y - i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
         }
         //down left
-        unblocked = true;
-        i = 1;
-        while(unblocked && i < 8){
-            if(!(getBoard().isValidSquare(x - i, y - i))){
-                unblocked = false;
+        for(i=1; i<8; i++){
+            if(!(getBoard().isValidSquare(x - i, y - i))) break;
+            Square s = getBoard().getSquare(x - i, y - i);
+            if(s.isEmpty()){
+                squares.add(s);
+            } else if(isEnemy(s.getPiece())){
+                squares.add(s);
+                break;
             } else{
-                Square s = getBoard().getSquare(x - i, y - i);
-                if(s.isEmpty()){
-                    squares.add(s);
-                    i++;
-                } else if(s.getPiece().isEnemy(this)){
-                    squares.add(s);
-                    unblocked = false;
-                } else{
-                    unblocked = false;
-                }
+                break;
             }
         }
         return squares;

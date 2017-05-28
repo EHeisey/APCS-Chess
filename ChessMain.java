@@ -3,7 +3,9 @@ package chess;
 import java.util.Scanner;
 
 /**
- *
+ * Starts a game of chess for two players. Upon completion, prompts if the users
+ * would like to play again.
+ * 
  * @author heiseed, wyliebl
  */
 public class ChessMain {
@@ -11,9 +13,7 @@ public class ChessMain {
     public static void main(String[] args){
         Scanner console = new Scanner(System.in);
         ChessGame.printInstructions();
-        
-        playing:
-        while(true){
+        playing: while(true){
             new ChessGame().start();
             System.out.println("Play again? (yes/no)");
             while(true){

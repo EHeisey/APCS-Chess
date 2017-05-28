@@ -1,7 +1,9 @@
 package chess;
 
 /**
- *
+ * A representation of a chess board square. Contains a reference to it's row and
+ * column coordinates as well as the piece it contain
+ * 
  * @author heiseed, wyliebl
  */
 public class Square {
@@ -23,7 +25,7 @@ public class Square {
     /**
      * method getPiece() - return piece on this square
      *
-     * @return Piece p - the piece
+     * @return the piece
      */
     public Piece getPiece(){
         return piece;
@@ -32,7 +34,7 @@ public class Square {
     /**
      * method getX() - get the x value of this square
      *
-     * @return int x - the x value
+     * @return the x value
      */
     public int getX(){
         return x;
@@ -41,7 +43,7 @@ public class Square {
     /**
      * method getY() - get the y value of this square
      *
-     * @return int y - the y value
+     * @return the y value
      */
     public int getY(){
         return y;
@@ -58,7 +60,6 @@ public class Square {
 
     /**
      * method removePiece() - remove the piece from this square
-     *
      */
     public void removePiece(){
         piece = null;
@@ -67,7 +68,7 @@ public class Square {
     /**
      * method isEmpty() - return whether the piece is empty
      *
-     * @return true- if there is no piece there false - if there is a piece
+     * @return true if there is no piece there false - if there is a piece
      */
     public boolean isEmpty(){
         return piece == null;
