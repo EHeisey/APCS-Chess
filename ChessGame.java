@@ -84,23 +84,74 @@ public class ChessGame {
         boolean answered = false;
         System.out.println("Congratulations! Player " + currentPlayer.getName() + " has won the game. ");
     }
-
+//would like to eventually make this work so you can cancel a move at any time and it will restart a turn
     private void turn(){
         currentPlayer = (turn % 2 == 0) ? white : black;
         System.out.println("\n" + currentPlayer.getName() + "'s Turn");
         printBoard(currentPlayer.getColor());
         System.out.print("Enter starting position:");
         Point start = askLocation();
-        while(board[start.x][start.y]==null||board[start.x][start.y].getColor()!=currentPlayer.getColor()){
-            System.out.print("Not your piece. Try again:");
-            start = askLocation();
+        
+        Piece p = null;
+        while (p == null) {
+            if (getPiece(start) == null) {
+                System.out.println("No piece here. Please enter a location in this format: 1a ");
+                start = askLocation();
+            } else if (!getPiece(start).getColor().equals(currentPlayer.getColor())){
+                System.out.println("You cannot move this piece. Pick a " + currentPlayer.getColor() + " piece.");
+                start = askLocation();
+            } else if (getPiece(start).getMoves(board, start).isEmpty()) {
+                System.out.println("You cannot move this piece. Pick another " + currentPlayer.getColor() + " piece.");
+                start = askLocation();
+            }
+                p = getPiece(start);
+            //cannot choose this piece if in check && cannot help
+            if (inCheck(currentPlayer.getColor())) {
+                boolean canhelp = false;
+                for (Point possibleMove: p.getMoves(board, start)) {
+                    Piece temp = getPiece(possibleMove);
+                    
+                    removePiece(possibleMove);
+                    setPiece(p, possibleMove);
+                    if (!inCheck(currentPlayer.getColor())) {
+                        canhelp = true;
+                    }
+                    setPiece(p, start);
+                    setPiece(temp,possibleMove);      
+                } 
+                if (!canhelp) {
+                    System.out.println("You cannot move this piece to get out of check. Choose another.");
+                    start = askLocation();
+                }
+            }    
         }
-        System.out.print("\nEnter move position:");
+        System.out.println("Enter move position in this format: 1a");
         Point end = askLocation();
-
+        
+        boolean canMoveHere = canMove(p, start, end);
+        while (!canMoveHere) {
+            System.out.println("You cannot move that piece here. Choose another location.");
+            end = askLocation();
+            canMoveHere = canMove(p, start, end);
+        }
+        //move the piece
+        setPiece(p, end);
+        removePiece(start);
+        if (p.getID().toLowerCase().equals("p")) {
+            Pawn pawn = (Pawn)p;
+            pawn.pawnHasMoved();
+        }
         turn++;
     }
 
+    public boolean canMove(Piece p, Point s, Point f) {
+        for (Point move : p.getMoves(board,s)) {
+            if (move.equals(f)) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Returns the user's response to prompts for a location on the board and 
      * parses the input to a Point that indicates indices in the array of Pieces
@@ -239,7 +290,7 @@ public class ChessGame {
         for (Piece[] r: board) {
             for (Piece p: r) {
                 if(!(p==null) && !p.getColor().equals(c)) {
-                    
+                    enemies.add(findPiece(p));
                 }    
             }
         }    
@@ -293,8 +344,6 @@ public class ChessGame {
     private Piece getPiece(int x, int y) {
         return board[x][y];
     }
-    public boolean isValidLocation(Point p) {
-        return p.x > -1 && p.x < 8 && p.y > -1 && p.y < 8;
-    }
+    
     
 }
