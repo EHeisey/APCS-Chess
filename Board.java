@@ -21,13 +21,7 @@ public class Board {
                 board[x][y] = new Square(x, y);
             }
         }
-    }
-
-    /**
-     * method initialize() - place pieces on board to start the game
-     *
-     */
-    public void initialize(){
+        
         // place white pieces
         Piece[][] white = {
             {
@@ -47,7 +41,7 @@ public class Board {
                 new Pawn(Color.WHITE),
                 new Pawn(Color.WHITE),
                 new Pawn(Color.WHITE),
-                new Pawn(Color.WHITE),}};
+                new Pawn(Color.WHITE)}};
 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 8; j++){
@@ -73,7 +67,7 @@ public class Board {
                 new Pawn(Color.BLACK),
                 new Pawn(Color.BLACK),
                 new Pawn(Color.BLACK),
-                new Pawn(Color.BLACK),}};
+                new Pawn(Color.BLACK)}};
 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 8; j++){
@@ -83,7 +77,7 @@ public class Board {
     }
 
     /**
-     * method print(Color c) - print the board from the perspective of a color
+     * method print(Color c) - print the board from the perspective of the specified color
      *
      * @param c - color of player
      */
