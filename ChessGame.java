@@ -2,6 +2,7 @@ package chess;
 
 import java.util.Scanner;
 import java.awt.Point;
+import java.util.ArrayList;
 
 /**
  * A command-line version of the classic game of chess.
@@ -14,6 +15,7 @@ public class ChessGame {
     private Player white, black;
     private Scanner console;
     private int turn;
+    private Player currentPlayer;
 
     /**
      * Creates a new instance of a chess game.
@@ -77,10 +79,14 @@ public class ChessGame {
         do{
             turn();
         } while(!inCheckmate(Color.WHITE)&&!inCheckmate(Color.BLACK));
+        Color winner = (turn%2==0) ? Color.WHITE : Color.BLACK;
+        printBoard(winner);
+        boolean answered = false;
+        System.out.println("Congratulations! Player " + currentPlayer.getName() + " has won the game. ");
     }
 
     private void turn(){
-        Player currentPlayer = (turn % 2 == 0) ? white : black;
+        currentPlayer = (turn % 2 == 0) ? white : black;
         System.out.println("\n" + currentPlayer.getName() + "'s Turn");
         printBoard(currentPlayer.getColor());
         System.out.print("Enter starting position:");
@@ -148,7 +154,7 @@ public class ChessGame {
      */
     public void printBoard(Color c){
         if(c == Color.WHITE){
-            System.out.println("\n   a b c d e f g h\n");
+            System.out.println("\n a b c d e f g h\n");
             for(int i = 7; i > -1; i--){
                 System.out.print(i + 1+" ");
                 for(int j = 0; j < 8; j++){
@@ -175,16 +181,120 @@ public class ChessGame {
             }
         }
     }
-
-    // needs serious work
+//lol efficiency is for nerdz
     public boolean inCheck(Color c){
-        
+        for (Point loc : enemies(c)) {
+            if (!(getPiece(loc)==null)) {
+                Piece enemy = getPiece(loc);
+                for(Point p : enemy.getMoves(board, loc)) {      
+                    if(!(getPiece(p).equals(null))) {
+                        if(getPiece(p).getID().toLowerCase().equals("k") && getPiece(p).getColor().equals(c)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    //totally works?????? mebbe 
+    public boolean inCheckmate(Color c){
+        if (inCheck(c)) {
+            King k = findKing(c);
+            if (k.getMoves(board, findPiece(k)).isEmpty()) {
+                if (enemies(board[enemies(c).get(0).x][enemies(c).get(0).y].getColor()).isEmpty()) {
+                    return true;
+                } else {
+                    for (Point friend : enemies(board[enemies(c).get(0).x][enemies(c).get(0).y].getColor())) {
+                        Piece p =  getPiece(friend);
+                        if (!p.getID().toLowerCase().equals("k")) {
+                            for (Point helpful : p.getMoves(board, friend)) {
+                                Piece temp = getPiece(helpful);
+                                Piece f = p;
+                                removePiece(friend);
+                                setPiece(f, helpful);
+                                if (!inCheck(c)) {
+                                    setPiece(f, friend);
+                                    setPiece(temp, helpful);
+                                    return false;
+                                } else{
+                                    setPiece(f, friend);
+                                    setPiece(temp, helpful);
+                                }
+                            } 
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                return false;
+            }
+
+        } 
         return false;
     }
     
-    public boolean inCheckmate(Color c){
-        
-        return false;
+    public ArrayList<Point> enemies(Color c) {
+        ArrayList<Point> enemies = new ArrayList<>();
+        for (Piece[] r: board) {
+            for (Piece p: r) {
+                if(!(p==null) && !p.getColor().equals(c)) {
+                    
+                }    
+            }
+        }    
+        return enemies;
     }
-
+    public void setPiece(Piece p, Point here) {
+        board[here.x][here.y] = p;
+    }
+    public Piece getPiece(Point p) {
+        return board[p.x][p.y];
+    }
+    private void removePiece(Point p) {
+        board[p.x][p.y] = null;
+    }
+    private Point findPiece(Piece p) {
+        Point point = null;
+        for(int i = 0; i<8; i++) {
+            for(int j = 0; j<8; j++) {
+                if (!(board[i][j]== null)) {
+                    if (board[i][j].getColor().equals(p.getColor()) && board[i][j].getID().toLowerCase().equals(p.getID().toLowerCase())) {
+                        point = new Point (i,j);
+                    }
+                }
+            }
+        }    
+        return point;
+    }
+    //only one of these is necessary...rip
+    public King findKing(Color c) {
+       King k = null;
+        for(Piece[] row : board){
+            for(Piece p : row){
+                if(p instanceof King && p.getColor()== c) {
+                    return (King)p;
+                }
+            }
+        }
+        return k;
+    }
+    public Point findKingLoc(Color c) {
+       Point k = null;
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j<8; j++) {
+                if(board[i][j] instanceof King) {
+                    k = new Point(i,j);
+                }
+            }
+        }    
+        return k;
+    }
+    private Piece getPiece(int x, int y) {
+        return board[x][y];
+    }
+    public boolean isValidLocation(Point p) {
+        return p.x > -1 && p.x < 8 && p.y > -1 && p.y < 8;
+    }
+    
 }
