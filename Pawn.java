@@ -35,14 +35,15 @@ public class Pawn extends Piece {
             if(getBoard().isValidSquare(x+1,y)) {
                 Square forward = getBoard().getSquare(x+1,y);
                 if (forward.isEmpty()) {
-                    squares.add(forward);   
-                } 
-                if (!hasMoved) {
-                    Square upTwo = getBoard().getSquare(x+2,y);
-                    if (upTwo.isEmpty()) {
-                        squares.add(upTwo);
+                    squares.add(forward);  
+                    if (!hasMoved) {
+                        Square upTwo = getBoard().getSquare(x+2,y);
+                        if (upTwo.isEmpty()) {
+                            squares.add(upTwo);
+                        }
                     }
-                }
+                } 
+                
             };    
             
             ArrayList<Square> enemies = getBoard().enemies(Color.WHITE);  
@@ -63,13 +64,14 @@ public class Pawn extends Piece {
                 Square forward = getBoard().getSquare(x-1,y);
                 if (forward.isEmpty()) {
                     squares.add(forward);
-                }
-                if (!hasMoved) {
-                    Square upTwo = getBoard().getSquare(x-2,y);
-                    if (upTwo.isEmpty()) {
-                        squares.add(upTwo);
+                    if (!hasMoved) {
+                        Square upTwo = getBoard().getSquare(x-2,y);
+                        if (upTwo.isEmpty()) {
+                            squares.add(upTwo);
+                        }
                     }
                 }
+                
             };   
             ArrayList<Square> enemies = getBoard().enemies(Color.BLACK);  
             for (Square s: enemies) {
