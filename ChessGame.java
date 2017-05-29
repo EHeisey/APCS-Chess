@@ -1,6 +1,10 @@
 package chess;
 
 import java.util.Scanner;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * A command-line version of the classic game of chess.
@@ -42,6 +46,20 @@ public class ChessGame {
         Player winner = (turn % 2 == 1) ? white : black;
         board.print(winner.getColor());
         System.out.println("Congratulations! Player " + winner.getName() + " has won the game. ");
+        String url = "http://www.google.com/search?q=victory";
+        if(Desktop.isDesktopSupported()){
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI(url));
+            } catch (IOException | URISyntaxException e) {
+            }
+        }else{
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                runtime.exec("xdg-open " + url);
+            } catch (IOException e) {
+            }
+        }
     }
 
     /**
@@ -153,7 +171,7 @@ public class ChessGame {
         System.out.println("The black pieces are displayed with a preceding \"B\":");
         System.out.println("King: BK, Queen: BQ, Bishop: BB, Knight: BN, Rook: BR, Pawn: BP");
         System.out.println();
-        System.out.println("This game displays standard chess coordinates above and beside");
+        System.out.println("This game displays standard chess coordinates on each side of");
         System.out.println("the game board each time it is displayed. Players must enter their");
         System.out.println("move selections in the form of row and column (ex. 1a, 5d, 3F, 8H).");
         System.out.println();
