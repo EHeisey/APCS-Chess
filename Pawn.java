@@ -29,12 +29,12 @@ public class Pawn extends Piece {
      */
     @Override
     public ArrayList<Square> getPossibleMoves(){
-        ArrayList<Square> squares = new ArrayList<>();
+        ArrayList<Square> squares = new ArrayList<Square>();
         Square start = this.currentSquare();
         int x = start.getX();
         int y = start.getY();
 
-        if(getColor().equals(Color.WHITE)){
+        if(getColor()==Color.WHITE){
             if(getBoard().isValidSquare(x + 1, y)){
                 Square forward = getBoard().getSquare(x + 1, y);
                 if(forward.isEmpty()){

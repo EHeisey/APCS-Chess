@@ -1,6 +1,6 @@
 package chess;
 
-import java.util.*;
+import java.util.Scanner;
 
 /**
  * A command-line version of the classic game of chess.
@@ -23,14 +23,12 @@ public class ChessGame {
     public ChessGame(){
         board = new Board();
         Piece.setBoard(board);
-        board.initialize();
         System.out.print("Player 1 (white):");
         String w = console.nextLine();
         white = new Player(Color.WHITE, w);
         System.out.print("Player 2 (black):");
         String b = console.nextLine();
         black = new Player(Color.BLACK, b);
-        current = white;
     }
 
     /**
@@ -52,12 +50,12 @@ public class ChessGame {
      */
     private void turn(){
         current = (turn%2 == 0) ? white : black;
-        System.out.println("\n" + current.getName() + "'s Turn");
+        System.out.println("\n" + current.getName() + "'s Turn ("+current.getColor().toString().toLowerCase()+")");
         board.print(current.getColor());
         boolean inCheck = board.inCheck(current.getColor());
         if(inCheck) System.out.println("You are in check. Please move out of check.");
 
-        System.out.println("Enter start position:");
+        System.out.print("Enter start position:");
 
         Square start = null;
         Piece p = null;
@@ -65,17 +63,17 @@ public class ChessGame {
             start = askLocation();
             // cannot select an empty square
             if(start.isEmpty()){
-                System.out.println("No piece here. Please enter a location containing a piece:");
+                System.out.print("No piece here. Please enter a location containing a piece:");
                 continue;
             }
             // cannot select a piece of the opposite color
             if(!start.getPiece().getColor().equals(current.getColor())){
-                System.out.println("You cannot move this piece. Pick a " + current.getColor() + " piece:");
+                System.out.print("You cannot move this piece. Pick a " + current.getColor() + " piece:");
                 continue;
             }
             // cannot select a piece with no poosible moves
             if(start.getPiece().getPossibleMoves().isEmpty()){
-                System.out.println("This piece is trapped. Pick another piece:");
+                System.out.print("This piece is trapped. Pick another piece:");
                 continue;
             }
             
@@ -98,53 +96,16 @@ public class ChessGame {
                     if(canhelp) break;
                 }
                 if(!canhelp){
-                    System.out.println("You cannot move this piece to get out of check. Choose another.");
+                    System.out.print("You cannot move this piece to get out of check. Choose another.");
                     p = null;
                 }
             }
         }
         
-        Piece p = null;
-        while (p == null) {
-            if (start.isEmpty()) {
-                System.out.println("No piece here. Please enter a location in this format: 1a ");
-                start = askLocation();
-            } else if (!start.getPiece().getColor().equals(current.getColor())){
-                System.out.println("You cannot move this piece. Pick a " + current.getColor() + " piece.");
-                start = askLocation();
-            } else if (start.getPiece().getPossibleMoves().isEmpty()) {
-                System.out.println("You cannot move this piece. Pick another " + current.getColor() + " piece.");
-                start = askLocation();
-            }
-                p = start.getPiece();
-            //cannot choose this piece if in check
-            if (board.inCheck(current.getColor())) {
-                boolean canhelp = false;
-                for (Square s: p.getPossibleMoves()) {
-                    Piece temp = s.getPiece();
-                    
-                    start.removePiece();
-                    s.setPiece(p);
-                    if (!board.inCheck(current.getColor())) {
-                        canhelp = true;
-                    }
-                    start.setPiece(p);
-                    s.setPiece(temp);
-      
-                } 
-                if (!canhelp) {
-                    System.out.println("You cannot move this piece to get out of check. Choose another.");
-                    start = askLocation();
-                }
-            }    
-        }
-        System.out.println("Enter move position in this format: 1a");
-        Square end = askLocation();
-        
-        System.out.println("Enter move position:");
+        System.out.print("Enter move position:");
         Square end = askLocation();
         while(!canMove(p, start, end)){
-            System.out.println("You cannot move that piece here. Choose another location:");
+            System.out.print("You cannot move that piece here. Choose another location:");
             end = askLocation();
         }
         end.setPiece(p);
@@ -186,15 +147,15 @@ public class ChessGame {
         System.out.println("            .     Eli Heisey & Brittany Wylie     .");
         System.out.println("            .......................................");
         System.out.println();
-        System.out.println("This game displays standard chess coordinates above and beside");
-        System.out.println("the game board each time it is displayed. Players must enter their");
-        System.out.println("move selections in the form of row and column (ex. 1a, 5d, 3F, 8H).");
-        System.out.println();
         System.out.println("The white pieces are displayed with a preceding \"W\":");
         System.out.println("King: WK, Queen: WQ, Bishop: WB, Knight: WN, Rook: WR, Pawn: WP");
         System.out.println();
         System.out.println("The black pieces are displayed with a preceding \"B\":");
         System.out.println("King: BK, Queen: BQ, Bishop: BB, Knight: BN, Rook: BR, Pawn: BP");
+        System.out.println();
+        System.out.println("This game displays standard chess coordinates above and beside");
+        System.out.println("the game board each time it is displayed. Players must enter their");
+        System.out.println("move selections in the form of row and column (ex. 1a, 5d, 3F, 8H).");
         System.out.println();
     }
 
@@ -208,18 +169,18 @@ public class ChessGame {
         String loc = console.nextLine();
 
         if(loc.length() != 2){
-            System.out.println("Incorrect format. Try in format: 1a");
+            System.out.print("Incorrect format. Try in format: 1a");
             return askLocation();
         }
         int x, y;
         try{
             x = Integer.parseInt(loc.substring(0, 1)) - 1;
         } catch(NumberFormatException e){
-            System.out.println("Incorrect format. Try in format: 1a");
+            System.out.print("Incorrect format. Try in format: 1a");
             return askLocation();
         }
         if(!Character.isLetter(loc.charAt(1))){
-            System.out.println("Incorrect format. Try in format: 1a");
+            System.out.print("Incorrect format. Try in format: 1a");
             return askLocation();
         }
         switch(loc.charAt(1)){
@@ -259,10 +220,8 @@ public class ChessGame {
                 y = -1;
         }
 
-        Square s;
-        try{
-            s = board.getSquare(x, y);
-        } catch(IndexOutOfBoundsException e){
+        Square s = board.getSquare(x, y);
+        if(s==null){
             System.out.print("Invalid Square. Try again:");
             return askLocation();
         }
