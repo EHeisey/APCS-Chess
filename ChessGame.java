@@ -53,7 +53,8 @@ public class ChessGame {
         current = (turn%2 == 0) ? white : black;
         System.out.println("\n" + current.getName() + "'s Turn");
         board.print(current.getColor());
-        if(board.inCheck(current.getColor())) System.out.println("You are in check. Please move out of check.");
+        boolean inCheck = board.inCheck(current.getColor());
+        if(inCheck) System.out.println("You are in check. Please move out of check.");
 
         System.out.println("Enter start position:");
 
@@ -81,7 +82,7 @@ public class ChessGame {
             p = start.getPiece();
             
             // deselects this piece if the player is in check and this piece cannot change that
-            if(board.inCheck(current.getColor())){
+            if(inCheck){
                 boolean canhelp = false;
                 for(Square s : p.getPossibleMoves()){
                     Piece temp = s.getPiece();
@@ -167,7 +168,6 @@ public class ChessGame {
      * @return the square the user requests
      */
     private Square askLocation(){
-        console = new Scanner(System.in);
         String loc = console.nextLine();
 
         if(loc.length() != 2){

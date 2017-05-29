@@ -24,7 +24,7 @@ public abstract class Piece {
      */
     public Piece(Color c, String i){
         color = c;
-        identifier = color == Color.WHITE ? i.toUpperCase() : i.toLowerCase();
+        identifier = (color == Color.WHITE) ? "W"+i : "B"+i;
     }
 
     /**
