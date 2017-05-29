@@ -21,7 +21,7 @@ public class Board {
         }
     }
    /**
-    method intialize() - place pieces on board to start the game
+    method initialize() - place pieces on board to start the game
     @param none
     @return null
     */
@@ -31,8 +31,8 @@ public class Board {
                 new Rook(Color.WHITE),
                 new Knight(Color.WHITE),
                 new Bishop(Color.WHITE),
-                new Queen(Color.WHITE),
-                new King(Color.WHITE),  
+                new King(Color.WHITE),
+                new Queen(Color.WHITE),                  
                 new Bishop(Color.WHITE),
                 new Knight(Color.WHITE),
                 new Rook(Color.WHITE)},
@@ -58,8 +58,8 @@ public class Board {
                 new Rook(Color.BLACK),
                 new Knight(Color.BLACK),
                 new Bishop(Color.BLACK),
-                new Queen(Color.BLACK),
                 new King(Color.BLACK),  
+                new Queen(Color.BLACK),
                 new Bishop(Color.BLACK),
                 new Knight(Color.BLACK),
                 new Rook(Color.BLACK)},
@@ -87,7 +87,7 @@ public class Board {
     */
     public void print(Color c){
         if (c==Color.BLACK) {
-            
+            System.out.println("\n  h g f e d c b a");
             for (int i = 0; i < 8; i++) {
                 System.out.print(i + 1);
                 for (int j = 0; j < 8; j++) {
@@ -101,9 +101,10 @@ public class Board {
                 System.out.println();
                 }
             }
-            System.out.println("\n  a b c d e f g h");
-        } else {
+            System.out.println("\n  h g f e d c b a");
             
+        } else {
+            System.out.println("\n  a b c d e f g h");
             for (int i = 7; i > -1; i--) {
                 System.out.print(i + 1);
                 for (int j = 7; j > -1; j--) {
@@ -117,7 +118,7 @@ public class Board {
                 System.out.println();
                 }
             }
-            System.out.println("\n  h g f e d c b a");
+            System.out.println("\n  a b c d e f g h");
         }
     } 
     /**
