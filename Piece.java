@@ -47,7 +47,7 @@ public abstract class Piece {
 
     /**
      * method currentSquare() - returns the current square of the piece, or null
-     * if it does not exist
+     * if it is not on the board
      *
      * @return square of piece
      */

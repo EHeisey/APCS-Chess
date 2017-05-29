@@ -3,8 +3,9 @@ package chess;
 import java.util.ArrayList;
 
 /**
- * Represents all the squares on a chess board. Also has methods for checking the
- * status of the board as a whole (i.e. check, checkmate).
+ * Represents all the squares on a chess board and provides access to individual
+ * squares. Also has methods for actions on the board as a whole (i.e. check, 
+ * checkmate, findKing, isValidSquare).
  * 
  * @author heiseed, wyliebl
  */
@@ -23,7 +24,6 @@ public class Board {
                 board[x][y] = new Square(x, y);
             }
         }
-        
         // place white pieces
         Piece[][] white = {
             {
@@ -85,38 +85,33 @@ public class Board {
      */
     public void print(Color c){
         if(c == Color.BLACK){
-            System.out.println("\n  h g f e d c b a");
+            System.out.println("\n    h   g   f   e   d   c   b   a\n");
             for(int i = 0; i < 8; i++){
                 System.out.print(i + 1);
                 for(int j = 0; j < 8; j++){
                     if(board[i][j].isEmpty()){
-                        System.out.print(" _");
+                        System.out.print("   _");
                     } else{
-                        System.out.print(" " + board[i][j].getPiece().getID());
+                        System.out.print("   " + board[i][j].getPiece().getID());
                     }
                 }
-                if(i < 7){
-                    System.out.println();
-                }
+                System.out.println("   "+(i+1)+"\n");
             }
-            System.out.println("\n  h g f e d c b a");
-
+            System.out.println("    h   g   f   e   d   c   b   a\n");
         } else{
-            System.out.println("\n  a b c d e f g h");
+            System.out.println("\n    a   b   c   d   e   f   g   h\n");
             for(int i = 7; i > -1; i--){
                 System.out.print(i + 1);
                 for(int j = 7; j > -1; j--){
                     if(board[i][j].isEmpty()){
-                        System.out.print(" _");
+                        System.out.print("   _");
                     } else{
-                        System.out.print(" " + board[i][j].getPiece().getID());
+                        System.out.print("   " + board[i][j].getPiece().getID());
                     }
                 }
-                if(i > 0){
-                    System.out.println();
-                }
+                System.out.println("   "+(i+1)+"\n");
             }
-            System.out.println("\n  a b c d e f g h\n");
+            System.out.println("    a   b   c   d   e   f   g   h\n");
         }
     }
     
@@ -148,22 +143,23 @@ public class Board {
     }
 
     /**
-     * method inCheck(Color current) - see if the current color is in check
+     * method inCheck(Color c) - see if the c color is in check
      *
-     * @param current - the color to check
-     * @return true if any piece of the opposite color can move to current
-     *         color's king, false otherwise
-     *
+     * @param c - the color to check
+     * @return true if any piece of the opposite color can move to c
+     * color's king, false otherwise
      */
-    public boolean inCheck(Color current){
-        for(Square enemy : enemies(current)){
-            if(!enemy.isEmpty()){
-                for(Square newEnemySpot : enemy.getPiece().getPossibleMoves()){
-                    if(!newEnemySpot.isEmpty() && newEnemySpot.getPiece().getID().toLowerCase().equals("k")){
-                        return true;
-                    }
-                }
+    public boolean inCheck(Color c){
+        // finds the king on the board
+        Square king = null;
+        for(Square[] row : board){
+            for(Square s : row){
+                if(!s.isEmpty() && s.getPiece() instanceof King && s.getPiece().getColor()==c) king = s;
             }
+        }
+        // checks if the king is in a possible move of an enemy piece
+        for(Square enemy : enemies(c)){
+            if(enemy.getPiece().getPossibleMoves().contains(king)) return true;
         }
         return false;
     }
@@ -177,61 +173,50 @@ public class Board {
      *         king and the enemy; false otherwise
      */
     public boolean inCheckMate(Color c){
-        if(inCheck(c)){
-            King k = findKing(c);
-            if(k.getPossibleMoves().isEmpty()){
-                if(enemies(enemies(c).get(0).getPiece().getColor()).isEmpty()){
-                    return true;
+        // check if the king is currently in check
+        if(!inCheck(c)) return false;
+        King k = findKing(c);
+        // check if the king itself has any possible moves
+        if(!k.getPossibleMoves().isEmpty()) return false;
+        // check if the king is the only piece left
+        ArrayList<Square> friends = enemies(c.opponent());
+        if(friends.size()==1) return true;
+        // check if any other pieces can block the attack
+        for(Square friend : friends){
+            Piece p = friend.getPiece();
+            if(p instanceof King) continue;
+            for(Square helpful : p.getPossibleMoves()){
+                Piece temp = helpful.getPiece();
+                friend.removePiece();
+                helpful.setPiece(p);
+                if(!inCheck(c)){
+                    friend.setPiece(p);
+                    helpful.setPiece(temp);
+                    return false;
                 } else{
-                    for(Square friend : enemies(enemies(c).get(0).getPiece().getColor())){
-                        Piece p = friend.getPiece();
-                        if(!p.getID().toLowerCase().equals("k")){
-                            for(Square helpful : p.getPossibleMoves()){
-                                Piece temp = helpful.getPiece();
-                                Piece f = p;
-                                friend.removePiece();
-                                helpful.setPiece(f);
-                                if(!inCheck(c)){
-                                    friend.setPiece(f);
-                                    helpful.setPiece(temp);
-                                    return false;
-                                } else{
-                                    friend.setPiece(f);
-                                    helpful.setPiece(temp);
-                                }
-                            }
-                            return true;
-                        }
-                    }
+                    friend.setPiece(p);
+                    helpful.setPiece(temp);
                 }
-            } else{
-                return false;
             }
-
         }
-        return false;
-
+        return true;
     }
 
     /**
-     * method findKing(Color c) - find the king of the color c (and thus its
-     * location)
+     * method findKing(Color c) - find the king of the color c
      *
      * @param c - the color of the king to find
      * @return the king of color c
      */
     private King findKing(Color c){
-        King k = null;
         for(Square[] r : board){
             for(Square s : r){
-                if(!s.isEmpty() && s.getPiece().getID().toLowerCase().equals("k")){
-                    if(s.getPiece().getColor().equals(c)){
-                        k = (King)s.getPiece();
-                    }
+                if(!s.isEmpty() && s.getPiece() instanceof King && s.getPiece().getColor()==c){
+                    return (King)s.getPiece();
                 }
             }
         }
-        return k;
+        return null;
     }
 
     /**
@@ -245,7 +230,7 @@ public class Board {
         ArrayList<Square> enemies = new ArrayList<>();
         for(Square[] r : board){
             for(Square s : r){
-                if(!s.isEmpty() && !s.getPiece().getColor().equals(c)){
+                if(!s.isEmpty() && s.getPiece().getColor()!=c){
                     enemies.add(s);
                 }
             }

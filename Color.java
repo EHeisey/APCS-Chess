@@ -14,4 +14,9 @@ public enum Color {
     BLACK;
     
     private Color(){}
+    
+    public Color opponent(){
+        if(this==WHITE) return BLACK;
+        return WHITE;
+    }
 }
