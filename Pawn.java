@@ -71,7 +71,6 @@ public class Pawn extends Piece {
                         }
                     }
                 }
-
             }
             if(getBoard().isValidSquare(x-1, y+1)){
                 Square s = getBoard().getSquare(x-1, y+1);

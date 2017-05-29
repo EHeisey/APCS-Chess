@@ -1,6 +1,6 @@
 package chess;
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * A command-line version of the classic game of chess.
@@ -23,6 +23,7 @@ public class ChessGame {
     public ChessGame(){
         board = new Board();
         Piece.setBoard(board);
+        board.initialize();
         System.out.print("Player 1 (white):");
         String w = console.nextLine();
         white = new Player(Color.WHITE, w);
@@ -103,6 +104,42 @@ public class ChessGame {
             }
         }
         
+        Piece p = null;
+        while (p == null) {
+            if (start.isEmpty()) {
+                System.out.println("No piece here. Please enter a location in this format: 1a ");
+                start = askLocation();
+            } else if (!start.getPiece().getColor().equals(current.getColor())){
+                System.out.println("You cannot move this piece. Pick a " + current.getColor() + " piece.");
+                start = askLocation();
+            } else if (start.getPiece().getPossibleMoves().isEmpty()) {
+                System.out.println("You cannot move this piece. Pick another " + current.getColor() + " piece.");
+                start = askLocation();
+            }
+                p = start.getPiece();
+            //cannot choose this piece if in check
+            if (board.inCheck(current.getColor())) {
+                boolean canhelp = false;
+                for (Square s: p.getPossibleMoves()) {
+                    Piece temp = s.getPiece();
+                    
+                    start.removePiece();
+                    s.setPiece(p);
+                    if (!board.inCheck(current.getColor())) {
+                        canhelp = true;
+                    }
+                    start.setPiece(p);
+                    s.setPiece(temp);
+      
+                } 
+                if (!canhelp) {
+                    System.out.println("You cannot move this piece to get out of check. Choose another.");
+                    start = askLocation();
+                }
+            }    
+        }
+        System.out.println("Enter move position in this format: 1a");
+        Square end = askLocation();
         
         System.out.println("Enter move position:");
         Square end = askLocation();
