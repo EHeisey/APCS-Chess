@@ -1,16 +1,33 @@
 package chess;
 
+import static chess.ChessGame.printInstructions;
+import java.util.Scanner;
+
 /**
  *
- * @author heiseed
+ * @author heiseed, wyliebl
  */
 public class ChessMain {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        ChessGame g = new ChessGame();
-        g.start();
+        printInstructions();	
+        boolean playing = true;
+        while (playing) {
+        new ChessGame().start();
+        System.out.println("Play again? (yes/no)");
+        boolean answered = false;
+        while (!answered) {
+                Scanner console = new Scanner(System.in);
+                String loc = console.nextLine();
+                if (loc.contains("yes")) {
+                    answered = true;
+                } if (loc.contains("no")) {
+                    answered = true;
+                    playing = false;
+                } else {
+                    System.out.println("Please answer the question with a yes or a no.");
+                }   
+            } 
+        }
     }
 }
