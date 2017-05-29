@@ -168,6 +168,7 @@ public class ChessGame {
     private Square askLocation() {
         console = new Scanner(System.in);
         String loc = console.nextLine();
+
         
         if (loc.length() == 2) {
             int x = -1;
@@ -233,7 +234,6 @@ public class ChessGame {
         } else {
             System.out.println("Position input wrong length. Try in format: 1a");
             return askLocation();
-
         }
         
     } 
