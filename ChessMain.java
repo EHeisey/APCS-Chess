@@ -1,33 +1,31 @@
 package chess;
 
-import static chess.ChessGame.printInstructions;
 import java.util.Scanner;
 
 /**
- *
+ * Starts a game of chess for two players. Upon completion, prompts if the users
+ * would like to play again.
+ * 
  * @author heiseed, wyliebl
  */
 public class ChessMain {
 
-    public static void main(String[] args) {
-        printInstructions();	
-        boolean playing = true;
-        while (playing) {
-        new ChessGame().start();
-        System.out.println("Play again? (yes/no)");
-        boolean answered = false;
-        while (!answered) {
-                Scanner console = new Scanner(System.in);
-                String loc = console.nextLine();
-                if (loc.contains("yes")) {
-                    answered = true;
-                } if (loc.contains("no")) {
-                    answered = true;
-                    playing = false;
-                } else {
-                    System.out.println("Please answer the question with a yes or a no.");
-                }   
-            } 
+    public static void main(String[] args){
+        Scanner console = new Scanner(System.in);
+        ChessGame.printInstructions();
+        playing: while(true){
+            new ChessGame().start();
+            System.out.println("Play again? (yes/no)");
+            while(true){
+                String ans = console.nextLine();
+                if(ans.contains("yes")){
+                    break;
+                }else if(ans.contains("no")){
+                    break playing;
+                } else{
+                    System.out.println("Please answer the question with a \"yes\" or a \"no\".");
+                }
+            }
         }
     }
 }
