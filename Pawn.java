@@ -1,6 +1,7 @@
 package chess;
 
 /**
+ * A representation of a Pawn chess piece.
  *
  * @author heiseed, wyliebl
  */

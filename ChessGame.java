@@ -153,11 +153,11 @@ public class ChessGame {
         System.out.println("the game board each time it is displayed. Players must enter their");
         System.out.println("move selections in the form of row and column (ex. 1a, 5d, 3F, 8H).");
         System.out.println();
-        System.out.println("The white pieces are displayed as uppercase letters:");
-        System.out.println("King: K, Queen: Q, Bishop: B, Knight: N, Rook: R, Pawn: P");
+        System.out.println("The white pieces are displayed with a preceding \"W\":");
+        System.out.println("King: WK, Queen: WQ, Bishop: WB, Knight: WN, Rook: WR, Pawn: WP");
         System.out.println();
-        System.out.println("The black pieces are displayed as lowercase letters:");
-        System.out.println("King: k, Queen: q, Bishop: b, Knight: n, Rook: r, Pawn: p");
+        System.out.println("The black pieces are displayed with a preceding \"B\":");
+        System.out.println("King: BK, Queen: BQ, Bishop: BB, Knight: BN, Rook: BR, Pawn: BP");
         System.out.println();
     }
 

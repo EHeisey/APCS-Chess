@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * The abstract superclass of all chess pieces. Holds references to information
- * that all pieces need (color and identifier) and a global reference to the 
+ * that all pieces need (color and ID) and a global reference to the 
  * board the pieces are on;
  * 
  * @author heiseed, wyliebl
@@ -17,14 +17,14 @@ public abstract class Piece {
 
     /**
      * constructor Piece(Color c, String i) - creates a piece of that color and
-     * assigns its identifying string
+     * assigns its complete identifying string
      *
      * @param c - color of piece
-     * @param i - identifying piece String
+     * @param i - base identifier of piece
      */
     public Piece(Color c, String i){
         color = c;
-        identifier = (color == Color.WHITE) ? "W"+i : "B"+i;
+        identifier = color == Color.WHITE ? "W"+i : "B"+i;
     }
 
     /**

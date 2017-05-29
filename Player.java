@@ -1,7 +1,8 @@
 package chess;
 
 /**
- *
+ * Holds the name and color of a chess player.
+ * 
  * @author heiseed
  */
 public class Player {

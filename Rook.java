@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 
 /**
+ * A representation of a Rook chess piece.
  *
  * @author heiseed, wyliebl
  */

@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 
 /**
+ * A representation of a Bishop chess piece.
  *
  * @author heiseed, wyliebl
  */
